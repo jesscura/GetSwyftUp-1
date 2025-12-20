@@ -146,10 +146,6 @@ export default function Home() {
                 <div className="relative h-2 w-full rounded-full bg-white/5">
                   <span className="absolute left-0 top-0 h-full w-[68%] rounded-full bg-[linear-gradient(90deg,var(--brand-1),var(--brand-2))]" />
                 </div>
-                <p className="text-xs text-muted">
-                  Do not copy any existing site’s layout or text. Use original spacing, typography scale, and
-                  component sizing. Design for trust, clarity, and financial accuracy.
-                </p>
               </CardContent>
             </Card>
           </div>
