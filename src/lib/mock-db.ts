@@ -144,8 +144,8 @@ type MockDatabase = {
 };
 
 const randomId = () =>
-  typeof crypto !== "undefined" && typeof (crypto as { randomUUID?: () => string }).randomUUID === "function"
-    ? (crypto as { randomUUID: () => string }).randomUUID()
+  typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+    ? crypto.randomUUID()
     : Math.random().toString(36).slice(2);
 
 const randomShort = (length = 6) => randomId().replace(/-/g, "").slice(-length);
@@ -426,11 +426,12 @@ function pushAudit(actorUserId: string, action: string, metadata: Record<string,
 
 function addLedger(walletId: string, type: LedgerType, amount: number, referenceType: string, referenceId: string, memo?: string) {
   const cents = Math.round(amount * 100);
+  const normalizedAmount = cents / 100;
   db.ledger.unshift({
     id: `led_${randomShort(8)}`,
     walletId,
     type,
-    amount,
+    amount: normalizedAmount,
     currency: "USD",
     referenceType,
     referenceId,
