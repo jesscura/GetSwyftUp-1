@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
@@ -9,6 +10,7 @@ export type NavItem = {
   name: string;
   href: string;
   badge?: string;
+  icon?: ReactNode;
 };
 
 export function Sidebar({ items }: { items: NavItem[] }) {
@@ -38,7 +40,10 @@ export function Sidebar({ items }: { items: NavItem[] }) {
                   : "text-muted hover:border hover:border-white/10 hover:text-text",
               )}
             >
-              <span>{item.name}</span>
+              <span className="flex items-center gap-2">
+                {item.icon && <span className="text-muted">{item.icon}</span>}
+                {item.name}
+              </span>
               {item.badge && (
                 <span className="rounded-full bg-white/5 px-2 py-1 text-[11px] text-muted">
                   {item.badge}

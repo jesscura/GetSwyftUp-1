@@ -1,0 +1,226 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  FINANCE
+  CONTRACTOR
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SUBMITTED
+  APPROVED
+  SCHEDULED
+  PAID
+  FAILED
+}
+
+enum WalletOwnerType {
+  ORG
+  CONTRACTOR
+}
+
+enum LedgerType {
+  CREDIT
+  DEBIT
+}
+
+enum PayoutStatus {
+  PENDING
+  APPROVED
+  PAID
+  FAILED
+}
+
+enum CardStatus {
+  ACTIVE
+  FROZEN
+  CLOSED
+}
+
+enum JobStatus {
+  QUEUED
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+model User {
+  id          String        @id @default(cuid())
+  email       String        @unique
+  name        String?
+  password    String?
+  memberships Membership[]
+  auditLogs   AuditLog[]    @relation("AuditActor")
+  createdAt   DateTime      @default(now())
+}
+
+model Organization {
+  id           String             @id @default(cuid())
+  name         String
+  createdAt    DateTime           @default(now())
+  memberships  Membership[]
+  contractors  ContractorProfile[]
+  invoices     Invoice[]
+  wallets      WalletAccount[]
+  payouts      Payout[]
+  cards        Card[]
+  auditLogs    AuditLog[]
+  support      SupportTicket[]
+  invites      Invite[]
+}
+
+model Membership {
+  id     String        @id @default(cuid())
+  user   User          @relation(fields: [userId], references: [id])
+  userId String
+  org    Organization  @relation(fields: [orgId], references: [id])
+  orgId  String
+  role   Role
+
+  @@unique([userId, orgId])
+}
+
+model ContractorProfile {
+  id        String        @id @default(cuid())
+  org       Organization  @relation(fields: [orgId], references: [id])
+  orgId     String
+  user      User?         @relation(fields: [userId], references: [id])
+  userId    String?
+  email     String
+  status    String        @default("invited")
+  invoices  Invoice[]
+  payouts   Payout[]
+  wallet    WalletAccount?
+}
+
+model Invite {
+  id        String        @id @default(cuid())
+  org       Organization  @relation(fields: [orgId], references: [id])
+  orgId     String
+  email     String
+  token     String        @unique
+  status    String        @default("pending")
+  createdAt DateTime      @default(now())
+  expiresAt DateTime
+}
+
+model Invoice {
+  id            String             @id @default(cuid())
+  org           Organization       @relation(fields: [orgId], references: [id])
+  orgId         String
+  contractor    ContractorProfile  @relation(fields: [contractorId], references: [id])
+  contractorId  String
+  amount        Decimal            @db.Decimal(10, 2)
+  currency      String
+  status        InvoiceStatus
+  dueDate       DateTime
+  memo          String?
+  payouts       Payout[]
+  createdAt     DateTime           @default(now())
+}
+
+model WalletAccount {
+  id            String             @id @default(cuid())
+  org           Organization       @relation(fields: [orgId], references: [id])
+  orgId         String
+  ownerType     WalletOwnerType
+  ownerId       String
+  currency      String
+  balanceCached Decimal            @db.Decimal(14, 2) @default(0)
+  ledgerEntries LedgerEntry[]
+}
+
+model LedgerEntry {
+  id            String       @id @default(cuid())
+  wallet        WalletAccount @relation(fields: [walletId], references: [id])
+  walletId      String
+  type          LedgerType
+  amount        Decimal       @db.Decimal(14, 2)
+  currency      String
+  referenceType String
+  referenceId   String
+  createdAt     DateTime      @default(now())
+}
+
+model Payout {
+  id           String            @id @default(cuid())
+  org          Organization      @relation(fields: [orgId], references: [id])
+  orgId        String
+  invoice      Invoice?          @relation(fields: [invoiceId], references: [id])
+  invoiceId    String?
+  contractor   ContractorProfile @relation(fields: [contractorId], references: [id])
+  contractorId String
+  amount       Decimal           @db.Decimal(14, 2)
+  currency     String
+  status       PayoutStatus
+  providerRef  String?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+}
+
+model Card {
+  id           String            @id @default(cuid())
+  org          Organization      @relation(fields: [orgId], references: [id])
+  orgId        String
+  contractor   ContractorProfile @relation(fields: [contractorId], references: [id])
+  contractorId String
+  last4        String
+  status       CardStatus
+  limitsJson   Json
+  transactions CardTransaction[]
+  createdAt    DateTime          @default(now())
+}
+
+model CardTransaction {
+  id         String   @id @default(cuid())
+  card       Card     @relation(fields: [cardId], references: [id])
+  cardId     String
+  amount     Decimal  @db.Decimal(12, 2)
+  currency   String
+  merchant   String
+  status     String
+  createdAt  DateTime @default(now())
+}
+
+model AuditLog {
+  id          String        @id @default(cuid())
+  org         Organization  @relation(fields: [orgId], references: [id])
+  orgId       String
+  actor       User          @relation("AuditActor", fields: [actorUserId], references: [id])
+  actorUserId String
+  action      String
+  metadataJson Json
+  createdAt   DateTime      @default(now())
+}
+
+model SupportTicket {
+  id              String        @id @default(cuid())
+  org             Organization  @relation(fields: [orgId], references: [id])
+  orgId           String
+  createdBy       User          @relation(fields: [createdByUserId], references: [id])
+  createdByUserId String
+  subject         String
+  status          String        @default("open")
+  messagesJson    Json
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Job {
+  id        String    @id @default(cuid())
+  type      String
+  payload   Json
+  status    JobStatus @default(QUEUED)
+  runAt     DateTime
+  attempts  Int       @default(0)
+  createdAt DateTime  @default(now())
+}

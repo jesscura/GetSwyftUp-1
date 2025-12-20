@@ -119,7 +119,9 @@ export default function Home() {
                 auditable system so finance teams can move funds with certainty.
               </p>
               <div className="flex flex-col gap-3 sm:flex-row">
-                <Button className="w-full sm:w-auto">Start a secure demo</Button>
+                <Button className="w-full sm:w-auto" asChild>
+                  <Link href="/auth/sign-in">Start a secure demo</Link>
+                </Button>
                 <Button variant="secondary" className="w-full sm:w-auto" asChild>
                   <Link href="/pricing">Compare plans</Link>
                 </Button>

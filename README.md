@@ -1,43 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SwyftUp live dashboard
 
-## Getting Started
+Production-style Next.js (App Router) dashboard for SwyftUp — contractor onboarding, invoices, payouts, wallets, cards, audit logs, and support tickets.
 
-First, run the development server:
+## Stack
+- Next.js 16 + TypeScript + Tailwind CSS (v4)
+- Auth: NextAuth (credentials-based demo accounts)
+- Data layer: Prisma + PostgreSQL schema (mocked in-memory data for UI flows)
+- Background jobs: simple job table processed via cron endpoint
+- Hosting: Railway-ready (see `railway.toml`)
 
+## Quickstart
+1) Install dependencies (Node 20+):
+```bash
+npm install
+```
+2) Copy environment variables:
+```bash
+cp .env.example .env   # adjust secrets as needed
+```
+3) Generate Prisma client (runs automatically on install, available for DB-backed flows):
+```bash
+npx prisma generate
+```
+4) Start the app:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+Visit `http://localhost:3000`.
+
+### Demo authentication
+- Default admin: `admin@swyftup.com` / `demo1234!`
+- Default contractor: `contractor@swyftup.com` / `demo1234!`
+- Any other email with `demo1234!` signs in as Finance (for exploration).
+Auth routes: `/auth/sign-in`, `/auth/sign-up`. Protected app routes live under `/app`.
+
+### Mock data, jobs, and seeding
+- UI data is served from an in-memory mock store that mirrors the Prisma schema.
+- Reset demo data: `POST /api/seed`.
+- Process queued background jobs (e.g., settle payouts): `GET /api/cron/process`.
+- Health check: `GET /api/health`.
+
+### Prisma schema
+Key models include User, Organization, Membership, ContractorProfile, Invite, Invoice, WalletAccount, LedgerEntry, Payout, Card, CardTransaction, AuditLog, SupportTicket, and Job. The schema lives at `prisma/schema.prisma` with a PostgreSQL datasource (configure `DATABASE_URL`).
+
+Run migrations against a real database when ready:
+```bash
+npx prisma migrate dev --name init
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
 ## Deploy on Railway
-
-This repository includes a `railway.toml` for Nixpacks-based deploys with a health check at `/api/health`.
-
+The included `railway.toml` is configured for Nixpacks with a health check at `/api/health`.
 1. Install the [Railway CLI](https://docs.railway.app/reference/cli) and log in.
-2. Run `railway up` from the project root to build and deploy; the service starts with `npm run start` and listens on the platform `PORT`.
+2. Ensure `DATABASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `DEMO_EMAIL`, and `DEMO_PASSWORD` are set in Railway variables.
+3. Deploy with `railway up` (service uses `npm run start` and respects `PORT`).
