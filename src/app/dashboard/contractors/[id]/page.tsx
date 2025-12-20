@@ -43,7 +43,7 @@ export default function ContractorProfilePage({ params }: { params: { id: string
         {tabs.map((tab) => (
           <Button
             key={tab}
-            variant={tab === activeTab ? "default" : "secondary"}
+            variant={tab === activeTab ? "primary" : "secondary"}
             size="sm"
             onClick={() => setActiveTab(tab)}
           >

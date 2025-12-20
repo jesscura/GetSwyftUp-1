@@ -72,7 +72,7 @@ export function SetupChecklistCard({
             </div>
             <Button
               size="sm"
-              variant={item.completed ? "secondary" : "default"}
+              variant={item.completed ? "secondary" : "primary"}
               disabled={item.completed || loadingKey === item.key}
               onClick={() => handleComplete(item.key)}
             >

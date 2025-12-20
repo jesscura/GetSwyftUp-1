@@ -39,7 +39,7 @@ export const authConfig = {
         const matchesSuperAdmin = Boolean(superAdminEmail && superAdminPassword && email === superAdminEmail && password === superAdminPassword);
 
         if (!matchesEnv && !matchesSuperAdmin) return null;
-        return { id: "user_owner", name: "Workspace Owner", email, role: "OWNER" };
+        return { id: "user_owner", name: "Workspace Owner", email, role: Role.OWNER };
       },
     }),
   ],
