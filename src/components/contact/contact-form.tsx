@@ -98,13 +98,16 @@ export function ContactForm() {
               required
             />
           </div>
-          {status !== "idle" && (
-            <p className={`text-sm ${status === "error" ? "text-[var(--brand-2)]" : "text-[var(--accent)]"}`}>{feedback}</p>
-          )}
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Button type="submit" className="w-full sm:w-auto">
-              Send Message
-            </Button>
+              {status !== "idle" && (
+                <p className={`text-sm ${status === "error" ? "text-[var(--brand-2)]" : "text-[var(--accent)]"}`}>{feedback}</p>
+              )}
+              <p className="text-xs text-muted">
+                Note: This form currently collects details locally. TODO: connect to backend/email delivery.
+              </p>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button type="submit" className="w-full sm:w-auto">
+                  Send Message
+                </Button>
             <Button asChild variant="secondary" className="w-full sm:w-auto">
               <Link href="/contact">Book a Demo</Link>
             </Button>

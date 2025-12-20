@@ -574,7 +574,7 @@ export const marketingPages: MarketingPageContent[] = [
     seoTitle: "Privacy Policy | SwyftUp",
     seoDescription: "Understand how SwyftUp collects, uses, and protects your data.",
     title: "Privacy Policy",
-    description: "How SwyftUp collects, uses, and protects your data.",
+    description: "Placeholder privacy overview until final legal text is published.",
     features: [
       { title: "What we collect", description: "Basic account, usage, and transaction-related data." },
       { title: "How we use it", description: "To provide services, prevent fraud, and improve performance." },
@@ -594,7 +594,7 @@ export const marketingPages: MarketingPageContent[] = [
     seoTitle: "Terms of Service | SwyftUp",
     seoDescription: "The terms and conditions for using SwyftUp.",
     title: "Terms of Service",
-    description: "The terms and conditions for using SwyftUp.",
+    description: "Placeholder terms summary until final legal text is published.",
     features: [
       { title: "Account terms", description: "Responsibilities and acceptable use." },
       { title: "Payments & fees", description: "How billing and payouts are handled." },
@@ -614,7 +614,7 @@ export const marketingPages: MarketingPageContent[] = [
     seoTitle: "Cookie Policy | SwyftUp",
     seoDescription: "Learn how SwyftUp uses cookies and how to manage your preferences.",
     title: "Cookie Policy",
-    description: "How cookies are used to improve your experience.",
+    description: "Placeholder cookie policy; full details coming soon.",
     features: [
       { title: "Essential", description: "Site functionality and security." },
       { title: "Analytics", description: "Understand usage and improve performance." },
@@ -634,7 +634,7 @@ export const marketingPages: MarketingPageContent[] = [
     seoTitle: "Data Processing Agreement | SwyftUp",
     seoDescription: "Review how SwyftUp processes data on behalf of customers and safeguards information.",
     title: "Data Processing Agreement (DPA)",
-    description: "Terms describing how SwyftUp processes data on behalf of customers.",
+    description: "Placeholder DPA summary; full agreement to be attached upon finalization.",
     features: [
       { title: "Roles & responsibilities", description: "Controller vs processor definitions." },
       { title: "Security measures", description: "How data is safeguarded." },

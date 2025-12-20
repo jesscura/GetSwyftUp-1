@@ -36,6 +36,7 @@ export default function BlogPostPage({ params }: { params: PageParams }) {
             {new Date(post.date).toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" })}
           </p>
           <p className="text-lg text-muted">{post.excerpt}</p>
+          <p className="text-xs text-muted">Sample post. Full content will be added when published.</p>
         </header>
 
         <Card className="bg-white/5">

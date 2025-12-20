@@ -82,7 +82,8 @@ export default function PricingPage() {
               Pricing that stays simple as you grow.
             </h1>
             <p className="text-lg text-muted sm:max-w-3xl">
-              Start small, scale up. Transparent tiers with the approvals, tracking, and audit trail you need.
+              Start small, scale up. Transparent tiers with the approvals, tracking, and audit trail you need. Pricing is
+              illustrative—contact us for finalized rates.
             </p>
           </div>
         </section>

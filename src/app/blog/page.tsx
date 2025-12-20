@@ -79,12 +79,12 @@ export default function BlogPage() {
             <div className="space-y-2">
               <h2 className="font-display text-2xl font-semibold text-text">Want updates in your inbox?</h2>
               <p className="text-sm text-muted">Subscribe for monthly insights and product news.</p>
-              <p className="text-xs text-muted">TODO: Connect this form to marketing email tooling.</p>
+              <p className="text-xs text-muted">Coming soon: email subscription will be enabled once marketing tooling is connected.</p>
             </div>
             <form className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-              <Input type="email" placeholder="you@company.com" required className="w-full sm:w-64" />
-              <Button type="submit" className="w-full sm:w-auto">
-                Subscribe
+              <Input type="email" placeholder="you@company.com" required className="w-full sm:w-64" disabled />
+              <Button type="submit" className="w-full sm:w-auto" disabled>
+                Subscribe (coming soon)
               </Button>
             </form>
           </div>
