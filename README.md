@@ -34,3 +34,10 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Deploy on Railway
+
+This repository includes a `railway.toml` for Nixpacks-based deploys with a health check at `/api/health`.
+
+1. Install the [Railway CLI](https://docs.railway.app/reference/cli) and log in.
+2. Run `railway up` from the project root to build and deploy; the service starts with `npm run start` and listens on the platform `PORT`.
