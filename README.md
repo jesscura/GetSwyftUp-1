@@ -49,4 +49,4 @@ npx prisma migrate dev --name init
 The included `railway.toml` is configured for Nixpacks with a health check at `/api/health`.
 1. Install the [Railway CLI](https://docs.railway.app/reference/cli) and log in.
 2. Ensure `DATABASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, `AUTH_EMAIL`, and `AUTH_PASSWORD` are set in Railway variables.
-3. Deploy with `railway up` (service uses `npm run start` and respects `PORT`).
+3. Deploy with `railway up` (service uses `npm run start` to run the standalone server output from `next build`/`output: "standalone"` and respects `PORT`).
