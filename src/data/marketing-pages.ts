@@ -574,7 +574,7 @@ export const marketingPages: MarketingPageContent[] = [
     seoTitle: "Privacy Policy | SwyftUp",
     seoDescription: "Understand how SwyftUp collects, uses, and protects your data.",
     title: "Privacy Policy",
-    description: "How SwyftUp collects, uses, and protects data.",
+    description: "How SwyftUp collects, uses, and protects data across your account and payment activity.",
     features: [
       { title: "What we collect", description: "Basic account, usage, and transaction-related data." },
       { title: "How we use it", description: "To provide services, prevent fraud, and improve performance." },
@@ -594,7 +594,7 @@ export const marketingPages: MarketingPageContent[] = [
     seoTitle: "Terms of Service | SwyftUp",
     seoDescription: "The terms and conditions for using SwyftUp.",
     title: "Terms of Service",
-    description: "Terms and conditions for using SwyftUp.",
+    description: "Terms covering account responsibilities, payments and fees, acceptable use, and service limitations.",
     features: [
       { title: "Account terms", description: "Responsibilities and acceptable use." },
       { title: "Payments & fees", description: "How billing and payouts are handled." },
