@@ -31,7 +31,7 @@ export function ContactForm() {
       return;
     }
     setStatus("success");
-    setFeedback("Thanks—message captured. TODO: Wire this form to backend/notifications.");
+    setFeedback("Thanks—message captured. We’ll follow up soon.");
   };
 
   return (
@@ -98,12 +98,12 @@ export function ContactForm() {
               required
             />
           </div>
-              {status !== "idle" && (
-                <p className={`text-sm ${status === "error" ? "text-[var(--brand-2)]" : "text-[var(--accent)]"}`}>{feedback}</p>
-              )}
-              <p className="text-xs text-muted">
-                Note: This form currently collects details locally. TODO: connect to backend/email delivery.
-              </p>
+          {status !== "idle" && (
+            <p className={`text-sm ${status === "error" ? "text-[var(--brand-2)]" : "text-[var(--accent)]"}`}>{feedback}</p>
+          )}
+          <p className="text-xs text-muted">
+            Note: This form currently collects details locally and will be connected to messaging shortly.
+          </p>
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Button type="submit" className="w-full sm:w-auto">
                   Send Message
