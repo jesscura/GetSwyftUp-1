@@ -31,7 +31,7 @@ export function ContactForm() {
       return;
     }
     setStatus("success");
-    setFeedback("Thanks—message captured. We’ll follow up soon.");
+    setFeedback("Demo form captured locally. Please email hello@getswyftup.com and we’ll follow up.");
   };
 
   return (

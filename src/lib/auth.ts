@@ -29,6 +29,11 @@ export const authConfig = {
         const superAdminEmail = process.env.SUPER_ADMIN_EMAIL;
         const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD;
 
+        if (!(authEmail && authPassword) && !(superAdminEmail && superAdminPassword)) {
+          console.warn("No authentication credentials configured.");
+          return null;
+        }
+
         const matchesEnv = Boolean(authEmail && authPassword && email === authEmail && password === authPassword);
         const matchesSuperAdmin = Boolean(superAdminEmail && superAdminPassword && email === superAdminEmail && password === superAdminPassword);
 
