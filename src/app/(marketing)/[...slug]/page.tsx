@@ -12,8 +12,8 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: Promise<PageParams> }): Promise<Metadata> {
-  const resolvedParams = await params;
-  const slug = (resolvedParams.slug || []).join("/");
+  const resolved = await params;
+  const slug = (resolved.slug || []).join("/");
   const page = getMarketingPage(slug);
 
   if (!page) {
@@ -27,8 +27,8 @@ export async function generateMetadata({ params }: { params: Promise<PageParams>
 }
 
 export default async function MarketingDynamicPage({ params }: { params: Promise<PageParams> }) {
-  const resolvedParams = await params;
-  const slug = (resolvedParams.slug || []).join("/");
+  const resolved = await params;
+  const slug = (resolved.slug || []).join("/");
   const page = getMarketingPage(slug);
 
   if (!page) {
