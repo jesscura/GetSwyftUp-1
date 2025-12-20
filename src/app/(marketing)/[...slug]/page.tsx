@@ -11,8 +11,9 @@ export function generateStaticParams() {
   return marketingStaticParams();
 }
 
-export function generateMetadata({ params }: { params: PageParams }): Metadata {
-  const slug = (params.slug || []).join("/");
+export async function generateMetadata({ params }: { params: Promise<PageParams> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const slug = (resolvedParams.slug || []).join("/");
   const page = getMarketingPage(slug);
 
   if (!page) {
@@ -25,8 +26,9 @@ export function generateMetadata({ params }: { params: PageParams }): Metadata {
   };
 }
 
-export default function MarketingDynamicPage({ params }: { params: PageParams }) {
-  const slug = (params.slug || []).join("/");
+export default async function MarketingDynamicPage({ params }: { params: Promise<PageParams> }) {
+  const resolvedParams = await params;
+  const slug = (resolvedParams.slug || []).join("/");
   const page = getMarketingPage(slug);
 
   if (!page) {
