@@ -13,16 +13,27 @@ export default function WithdrawPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm uppercase tracking-[0.2em] text-muted">Fast bank withdrawal (low FX, real rates)</p>
-          <h1 className="font-display text-2xl font-semibold">Powered by Wise</h1>
-          <p className="text-sm text-muted">Cheapest rail for overseas contractors. FX shown up front.</p>
+          <p className="text-sm uppercase tracking-[0.2em] text-muted">Choose how to access funds</p>
+          <h1 className="font-display text-2xl font-semibold">Withdraw vs. Card</h1>
+          <p className="text-sm text-muted">Fast bank withdrawal (low FX, real rates) is the default. Cards are for instant spend.</p>
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
         <Card>
-          <CardHeader>
-            <p className="text-sm text-muted">Create withdrawal</p>
+          <CardHeader className="flex flex-col gap-2">
+            <div className="flex items-center gap-3">
+              <Button variant="secondary" className="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+                Withdraw via Bank
+              </Button>
+              <span className="text-sm text-muted">Fast bank withdrawal (low FX, real rates) · Powered by Wise</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" className="rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide" disabled>
+                Spend via Card
+              </Button>
+              <span className="text-sm text-muted">Instant card spend (convenience) — wallet-funded, not for FX savings</span>
+            </div>
           </CardHeader>
           <CardContent className="space-y-3">
             <form className="space-y-3" action={withdrawPayoutAction}>
@@ -43,6 +54,11 @@ export default function WithdrawPage() {
                 <option value="MXN">MXN</option>
                 <option value="EUR">EUR</option>
               </Select>
+              <div className="rounded-[var(--radius-card)] border border-white/5 bg-white/5 p-3 text-sm text-muted">
+                <p className="font-semibold text-text">FX transparency</p>
+                <p>Mid-market rate shown before submit. Wise fee itemized. Example: $1,000 → MXN at 17.30, fee ~$5.00, net ≈ MXN 17,295.</p>
+                <p>Cards use network FX and may differ; choose bank withdrawal for cheapest FX.</p>
+              </div>
               <Button type="submit" className="w-full">
                 Request withdrawal via Wise
               </Button>

@@ -1,5 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { wiseProvider } from "@/lib/wise-provider";
 
 export type Role = "OWNER" | "ADMIN" | "FINANCE" | "CONTRACTOR";
 export type ContractorStatus = "invited" | "onboarding" | "active";
@@ -520,7 +521,7 @@ const seedData: MockDatabase = {
 
 let db: MockDatabase = structuredClone(seedData);
 
-function pushAudit(actorUserId: string, action: string, metadata: Record<string, unknown>) {
+export function pushAudit(actorUserId: string, action: string, metadata: Record<string, unknown>) {
   db.audit.unshift({
     id: `audit_${randomShort(8)}`,
     orgId: db.org.id,
@@ -731,8 +732,11 @@ export const processJobsAction = async () => {
         const payoutId = job.payload.payoutId as string | undefined;
         const payout = payoutId ? db.payouts.find((p) => p.id === payoutId) : undefined;
         if (payout) {
+          const providerRef = (job.payload as { providerRef?: string }).providerRef;
           payout.status = "paid";
-          addLedger("w_org", "DEBIT", payout.amount, "payout", payout.id, "Payout processed", payout.sourceCurrency, "posted");
+          addLedger("w_org", "DEBIT", payout.amount, "payout", payout.id, "Payout processed", payout.sourceCurrency, "posted", {
+            providerRef,
+          });
           pushAudit("user_finance", "mark_payout_paid", { payoutId: payout.id, provider: payout.provider });
         }
       }
@@ -932,21 +936,6 @@ export const contractorCardDecisionAction = async (formData: FormData) => {
   revalidatePath("/app/cards");
 };
 
-const computeFxQuote = (sourceCurrency: string, destinationCurrency: string, amount: number): FXQuote => {
-  const rate = destinationCurrency === "MXN" ? 17.3 : destinationCurrency === "EUR" ? 0.91 : 1;
-  const fee = Math.max(5, amount * 0.003);
-  return {
-    id: `fx_${randomShort(6)}`,
-    provider: "WISE",
-    sourceCurrency,
-    destinationCurrency,
-    rate,
-    fee,
-    expiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
-    createdAt: new Date().toISOString(),
-  };
-};
-
 export const previewWiseQuoteAction = async (formData: FormData) => {
   "use server";
   const parsed = z
@@ -961,7 +950,11 @@ export const previewWiseQuoteAction = async (formData: FormData) => {
       destinationCurrency: formData.get("destinationCurrency"),
     });
   if (!parsed.success) throw new Error("Invalid quote request");
-  const quote = computeFxQuote(parsed.data.sourceCurrency, parsed.data.destinationCurrency, parsed.data.amount);
+  const quote = await wiseProvider.getFXQuote(
+    parsed.data.sourceCurrency,
+    parsed.data.destinationCurrency,
+    parsed.data.amount,
+  );
   db.fxQuotes.unshift(quote);
   revalidatePath("/app/wallet/withdraw");
   return quote;
@@ -984,11 +977,17 @@ export const withdrawPayoutAction = async (formData: FormData) => {
   const contractorWallet = db.wallets.find((w) => w.ownerId === parsed.data.contractorId);
   if (!contractorWallet) throw new Error("Wallet not found");
   if (contractorWallet.balance < parsed.data.amount) throw new Error("Insufficient funds");
-  const quote = computeFxQuote(contractorWallet.currency, parsed.data.destinationCurrency, parsed.data.amount);
+  const quote = await wiseProvider.getFXQuote(
+    contractorWallet.currency,
+    parsed.data.destinationCurrency,
+    parsed.data.amount,
+  );
   db.fxQuotes.unshift(quote);
+  const recipient = await wiseProvider.createRecipient({ contractorId: parsed.data.contractorId, bankCountry: "US", currency: parsed.data.destinationCurrency });
+  const transfer = await wiseProvider.createTransfer(`pay_${randomShort(6)}`, recipient.id, parsed.data.amount, parsed.data.destinationCurrency);
 
   const payout: Payout = {
-    id: `pay_${randomShort(6)}`,
+    id: transfer.providerRef,
     orgId: db.org.id,
     contractorId: parsed.data.contractorId,
     amount: parsed.data.amount,
@@ -998,18 +997,20 @@ export const withdrawPayoutAction = async (formData: FormData) => {
     fxFee: quote.fee,
     provider: "WISE",
     status: "pending",
-    providerRef: `wise-${randomShort(6)}`,
-    estimatedArrival: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+    providerRef: transfer.providerRef,
+    estimatedArrival: transfer.estimatedArrival,
     createdAt: new Date().toISOString(),
   };
   db.payouts.unshift(payout);
   addLedger(contractorWallet.id, "DEBIT", parsed.data.amount, "payout", payout.id, "Withdrawal requested", contractorWallet.currency, "pending", {
     destinationCurrency: parsed.data.destinationCurrency,
+    quoteId: quote.id,
+    providerRef: transfer.providerRef,
   });
   db.jobs.unshift({
     id: `job_${randomShort(6)}`,
     type: "payout_status_refresh",
-    payload: { payoutId: payout.id },
+    payload: { payoutId: payout.id, providerRef: transfer.providerRef },
     status: "QUEUED",
     runAt: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
     attempts: 0,
