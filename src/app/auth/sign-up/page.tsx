@@ -40,9 +40,9 @@ export default function SignUpPage() {
       <Card className="w-full max-w-md border-white/5 bg-[color-mix(in_srgb,var(--panel)_92%,transparent)]">
         <CardHeader className="space-y-2">
           <p className="text-sm uppercase tracking-[0.2em] text-muted">Create workspace</p>
-          <h1 className="font-display text-3xl font-semibold">Get started with SwyftUp</h1>
+          <h1 className="font-display text-3xl font-semibold">Create your SwyftUp workspace</h1>
           <p className="text-sm text-muted">
-            Use your issued credentials to explore the dashboard. Roles default to Finance.
+            Set up your account in minutes. You can invite contractors after you’re ready.
           </p>
         </CardHeader>
         <CardContent>
@@ -56,7 +56,7 @@ export default function SignUpPage() {
                   checked={accountType === "company"}
                   onChange={() => setAccountType("company")}
                 />
-                I&apos;m a Company
+                I’m a Business
               </label>
               <label className="flex items-center gap-2">
                 <input
@@ -66,9 +66,12 @@ export default function SignUpPage() {
                   checked={accountType === "contractor"}
                   onChange={() => setAccountType("contractor")}
                 />
-                I&apos;m a Contractor (invited)
+                I’m a Contractor (invite-only)
               </label>
             </div>
+            {accountType === "contractor" && (
+              <p className="text-xs text-muted">Contractor accounts are typically created via invite.</p>
+            )}
             <div className="space-y-2">
               <label className="text-sm text-muted">Work email</label>
               <Input

@@ -301,9 +301,9 @@ export const marketingPages: MarketingPageContent[] = [
     description:
       "Know what you’ll pay and what contractors will receive—before you send a payout.",
     features: [
-      { title: "Clear payout fees", description: "Straightforward line items you can explain." },
-      { title: "FX transparency", description: "Show rates and totals upfront." },
-      { title: "Better value at scale", description: "Designed to stay competitive as volume grows." },
+      { title: "Payout fees", description: "Straightforward line items—shown before you submit a transfer." },
+      { title: "FX markup", description: "Clear view of the markup over mid-market so totals stay predictable." },
+      { title: "Processing times", description: "Expected timelines by corridor with status tracking." },
     ],
     cta: {
       headline: "No surprises. Just clear costs.",
@@ -335,8 +335,8 @@ export const marketingPages: MarketingPageContent[] = [
     slug: "blog",
     seoTitle: "Blog | SwyftUp",
     seoDescription: "Insights, guides, and product updates for paying and working globally.",
-    title: "Insights for paying and working globally.",
-    description: "Guides, best practices, and product updates for finance teams and remote workers.",
+    title: "SwyftUp Blog",
+    description: "Updates and guides for global contractor payments and remote work.",
     features: [
       { title: "Global payout basics", description: "Understand rails, timelines, and common pitfalls." },
       { title: "Finance ops playbooks", description: "Approval workflows and audit readiness." },
@@ -354,7 +354,7 @@ export const marketingPages: MarketingPageContent[] = [
     seoTitle: "Help Center | SwyftUp",
     seoDescription: "Find answers fast for setup, payouts, onboarding, and troubleshooting.",
     title: "Help Center",
-    description: "Find answers fast—setup, payouts, onboarding, and troubleshooting.",
+    description: "Guides for onboarding, payouts, and troubleshooting.",
     features: [
       { title: "Getting started", description: "Set up your account and first payout." },
       { title: "Payout support", description: "Understand statuses, timelines, and issues." },
@@ -371,8 +371,8 @@ export const marketingPages: MarketingPageContent[] = [
     slug: "faqs",
     seoTitle: "FAQs | SwyftUp",
     seoDescription: "Quick answers to the most common SwyftUp questions.",
-    title: "Frequently asked questions",
-    description: "Quick answers to the most common SwyftUp questions.",
+    title: "FAQs",
+    description: "Quick answers to common questions.",
     features: [
       { title: "How payouts work", description: "Timelines, fees, and approval steps." },
       { title: "Virtual card basics", description: "How contractors access and use funds." },
@@ -391,15 +391,15 @@ export const marketingPages: MarketingPageContent[] = [
     seoDescription: "Security practices built for modern finance operations and audit readiness.",
     title: "Compliance & Security",
     description:
-      "Security practices designed for modern finance operations—built to support audit readiness.",
+      "Security practices designed for modern finance operations—built for accountability and audit readiness with a security-first approach.",
     features: [
       { title: "Data protection", description: "Encryption and secure handling of sensitive information." },
       { title: "Access controls", description: "Role-based access and approvals." },
       { title: "Audit trail", description: "Track key actions for accountability." },
     ],
     cta: {
-      headline: "Need security details?",
-      subhead: "Contact us for security documentation.",
+      headline: "Need security documentation?",
+      subhead: "Contact us for a security questionnaire or details.",
       primary: { label: "Contact", href: "/contact" },
       secondary: { label: "Book a Demo", href: "/contact" },
     },
@@ -536,18 +536,18 @@ export const marketingPages: MarketingPageContent[] = [
     slug: "contact",
     seoTitle: "Contact | SwyftUp",
     seoDescription: "Talk to sales, support, or partnerships and we’ll route you to the right person.",
-    title: "Contact",
-    description: "Talk to sales, support, or partnerships. We’ll route you to the right person.",
+    title: "Talk to SwyftUp",
+    description: "Sales, support, or partnerships—send a message and we’ll route it to the right team.",
     features: [
-      { title: "Sales", description: "Product questions and demos." },
-      { title: "Support", description: "Help with setup and payouts." },
-      { title: "Partnerships", description: "Integration and referral opportunities." },
+      { title: "Sales", description: "Request a demo or ask product questions." },
+      { title: "Support", description: "Help with setup, payouts, or access." },
+      { title: "Partnerships", description: "Integrations and referrals." },
     ],
     cta: {
-      headline: "Tell us what you need.",
-      subhead: "We’ll respond as soon as possible.",
-      primary: { label: "Send Message", href: "/contact" },
-      secondary: { label: "Book a Demo", href: "/contact" },
+      headline: "Want a walkthrough?",
+      subhead: "Book a time or send a message—we’ll respond ASAP.",
+      primary: { label: "Book a Demo", href: "/contact" },
+      secondary: { label: "Send Message", href: "/contact#contact-form" },
     },
   },
   {
@@ -556,7 +556,7 @@ export const marketingPages: MarketingPageContent[] = [
     seoDescription: "Reduce payout delays and access funds sooner with SwyftUp’s virtual card experience.",
     title: "Get paid faster—without the usual friction.",
     description:
-      "SwyftUp is built to reduce delays between earning and using your money, especially for overseas and remote workers.",
+      "Built to reduce delays between earning and accessing your money—especially for overseas and remote work.",
     features: [
       { title: "Fewer payout steps", description: "A smoother flow from approval to access." },
       { title: "Virtual card access", description: "Use funds online sooner." },
@@ -574,12 +574,14 @@ export const marketingPages: MarketingPageContent[] = [
     seoTitle: "Privacy Policy | SwyftUp",
     seoDescription: "Understand how SwyftUp collects, uses, and protects your data.",
     title: "Privacy Policy",
-    description: "How SwyftUp collects, uses, and protects your data.",
+    description: "Placeholder privacy overview until final legal text is published.",
     features: [
       { title: "What we collect", description: "Basic account, usage, and transaction-related data." },
       { title: "How we use it", description: "To provide services, prevent fraud, and improve performance." },
       { title: "Your rights", description: "Access, deletion, and preference controls." },
     ],
+    body:
+      "Placeholder policy. TODO: Replace with the full, approved Privacy Policy covering collection, use, retention, and data subject rights.",
     cta: {
       headline: "Questions about privacy?",
       subhead: "Contact us for clarification.",
@@ -592,12 +594,14 @@ export const marketingPages: MarketingPageContent[] = [
     seoTitle: "Terms of Service | SwyftUp",
     seoDescription: "The terms and conditions for using SwyftUp.",
     title: "Terms of Service",
-    description: "The terms and conditions for using SwyftUp.",
+    description: "Placeholder terms summary until final legal text is published.",
     features: [
       { title: "Account terms", description: "Responsibilities and acceptable use." },
       { title: "Payments & fees", description: "How billing and payouts are handled." },
       { title: "Limitations", description: "Liability and dispute policies." },
     ],
+    body:
+      "Placeholder terms. TODO: Insert the official Terms of Service reviewed by legal, including service usage, payment obligations, and dispute resolution.",
     cta: {
       headline: "Need help understanding the terms?",
       subhead: "Contact us and we’ll help.",
@@ -610,12 +614,14 @@ export const marketingPages: MarketingPageContent[] = [
     seoTitle: "Cookie Policy | SwyftUp",
     seoDescription: "Learn how SwyftUp uses cookies and how to manage your preferences.",
     title: "Cookie Policy",
-    description: "How SwyftUp uses cookies to improve your experience.",
+    description: "Placeholder cookie policy; full details coming soon.",
     features: [
-      { title: "Essential cookies", description: "Site functionality and security." },
-      { title: "Analytics cookies", description: "Understand usage and improve performance." },
-      { title: "Preference controls", description: "Manage your cookie settings." },
+      { title: "Essential", description: "Site functionality and security." },
+      { title: "Analytics", description: "Understand usage and improve performance." },
+      { title: "Preferences", description: "Manage your cookie settings." },
     ],
+    body:
+      "Placeholder cookie policy. TODO: Add full cookie disclosure and implement a preferences modal or manager for consent updates.",
     cta: {
       headline: "Manage your preferences.",
       subhead: "Update your cookie settings anytime.",
@@ -628,12 +634,14 @@ export const marketingPages: MarketingPageContent[] = [
     seoTitle: "Data Processing Agreement | SwyftUp",
     seoDescription: "Review how SwyftUp processes data on behalf of customers and safeguards information.",
     title: "Data Processing Agreement (DPA)",
-    description: "Terms describing how SwyftUp processes data on behalf of customers.",
+    description: "Placeholder DPA summary; full agreement to be attached upon finalization.",
     features: [
       { title: "Roles & responsibilities", description: "Controller vs processor definitions." },
       { title: "Security measures", description: "How data is safeguarded." },
       { title: "Subprocessors", description: "Transparency into service providers." },
     ],
+    body:
+      "Placeholder DPA summary. TODO: Attach the signed Data Processing Agreement with subprocessors list and security measures.",
     cta: {
       headline: "Need the DPA for procurement?",
       subhead: "Contact us for the latest version.",

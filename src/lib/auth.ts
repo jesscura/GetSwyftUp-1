@@ -26,11 +26,18 @@ export const authConfig = {
         const { email, password } = parsed.data;
         const authEmail = process.env.AUTH_EMAIL;
         const authPassword = process.env.AUTH_PASSWORD;
-        if (!authEmail || !authPassword) {
-          console.warn("AUTH_EMAIL or AUTH_PASSWORD not set; rejecting sign-in");
+        const superAdminEmail = process.env.SUPER_ADMIN_EMAIL;
+        const superAdminPassword = process.env.SUPER_ADMIN_PASSWORD;
+
+        if (!(authEmail && authPassword) && !(superAdminEmail && superAdminPassword)) {
+          console.warn("No authentication credentials configured.");
           return null;
         }
-        if (email !== authEmail || password !== authPassword) return null;
+
+        const matchesEnv = Boolean(authEmail && authPassword && email === authEmail && password === authPassword);
+        const matchesSuperAdmin = Boolean(superAdminEmail && superAdminPassword && email === superAdminEmail && password === superAdminPassword);
+
+        if (!matchesEnv && !matchesSuperAdmin) return null;
         return { id: "user_owner", name: "Workspace Owner", email, role: "OWNER" };
       },
     }),

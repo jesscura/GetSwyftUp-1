@@ -39,6 +39,7 @@ export default function MarketingDynamicPage({ params }: { params: PageParams })
       description={page.description}
       features={page.features}
       cta={page.cta}
+      body={page.body}
     />
   );
 }
