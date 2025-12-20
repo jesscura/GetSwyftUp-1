@@ -20,9 +20,10 @@ export type MarketingPageTemplateProps = {
   description: string;
   features: Feature[];
   cta: CTA;
+  body?: string;
 };
 
-export function MarketingPageTemplate({ title, description, features, cta }: MarketingPageTemplateProps) {
+export function MarketingPageTemplate({ title, description, features, cta, body }: MarketingPageTemplateProps) {
   return (
     <MarketingLayout>
       <div className="mx-auto max-w-5xl px-6 py-14 space-y-12">
@@ -49,6 +50,12 @@ export function MarketingPageTemplate({ title, description, features, cta }: Mar
             </Card>
           ))}
         </section>
+
+        {body && (
+          <section className="rounded-[var(--radius-card)] border border-white/5 bg-white/5 p-6 text-sm leading-6 text-muted">
+            {body}
+          </section>
+        )}
 
         <section className="rounded-[var(--radius-card)] border border-[var(--accent)]/30 bg-[linear-gradient(135deg,rgba(92,100,255,0.15),rgba(54,213,255,0.08))] p-8 shadow-[var(--shadow-soft)]">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

