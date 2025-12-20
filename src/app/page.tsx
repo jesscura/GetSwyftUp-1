@@ -2,13 +2,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-
-const navLinks = [
-  { label: "Platform", href: "#features" },
-  { label: "How it works", href: "#how" },
-  { label: "Security", href: "#security" },
-  { label: "Pricing", href: "/pricing" },
-];
+import { MarketingLayout } from "@/components/marketing/marketing-layout";
 
 const AUTH_PATH = "/auth/sign-in";
 
@@ -71,89 +65,59 @@ const proof = ["ARCHWAY", "LUMENFI", "PARALLAX", "NORTHSTAR", "CIRCUIT", "ALTAIR
 
 export default function Home() {
   return (
-    <div className="bg-bg text-text">
-      <div className="absolute inset-0 -z-10 opacity-40 blur-3xl">
-        <div className="absolute left-10 top-10 h-80 w-80 rounded-full bg-[radial-gradient(circle_at_center,var(--brand-1),transparent_60%)]" />
-        <div className="absolute right-16 top-0 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,var(--brand-2),transparent_60%)]" />
-      </div>
-      <header className="sticky top-0 z-20 border-b border-white/5 bg-bg/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-[var(--radius-card)] bg-[linear-gradient(135deg,var(--brand-1),var(--brand-2))] text-base font-bold text-white shadow-[var(--shadow-elevated)]">
-              SU
-            </span>
-            <div>
-              <p className="font-display text-lg font-semibold tracking-tight">SwyftUp</p>
-              <p className="text-xs text-muted">Global contractor finance</p>
-            </div>
-          </div>
-          <nav className="hidden items-center gap-6 text-sm text-muted md:flex">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="transition hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" className="hidden md:inline-flex" asChild>
-              <Link href="/pricing">See pricing</Link>
-            </Button>
-            <Button>Book a walkthrough</Button>
-          </div>
+    <MarketingLayout>
+      <div className="relative">
+        <div className="absolute inset-0 -z-10 opacity-40 blur-3xl">
+          <div className="absolute left-10 top-10 h-80 w-80 rounded-full bg-[radial-gradient(circle_at_center,var(--brand-1),transparent_60%)]" />
+          <div className="absolute right-16 top-0 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,var(--brand-2),transparent_60%)]" />
         </div>
-      </header>
-
-      <main className="mx-auto max-w-6xl px-6 pb-20 pt-16">
-        <section className="relative overflow-hidden rounded-[var(--radius-card)] border border-white/5 bg-[color-mix(in_srgb,var(--panel)_92%,transparent)] px-8 py-16 shadow-[var(--shadow-soft)]">
-          <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_30%_30%,rgba(92,100,255,0.25),transparent_40%),radial-gradient(circle_at_80%_20%,rgba(210,60,161,0.2),transparent_45%)]" />
-          <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-            <div className="max-w-2xl space-y-6">
-              <Badge tone="accent">Trusted payout workspace</Badge>
-              <h1 className="font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-                Confident global payouts
-              </h1>
-              <p className="text-lg text-muted sm:max-w-xl">
-                SwyftUp keeps contractor onboarding, billing, approvals, and payouts organized in one calm,
-                auditable system so finance teams can move funds with certainty.
-              </p>
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Button className="w-full sm:w-auto" asChild>
-                  <Link href={AUTH_PATH}>Access workspace</Link>
-                </Button>
-                <Button variant="secondary" className="w-full sm:w-auto" asChild>
-                  <Link href="/pricing">Compare plans</Link>
-                </Button>
+        <main className="mx-auto max-w-6xl px-6 pb-20 pt-12">
+          <section className="relative overflow-hidden rounded-[var(--radius-card)] border border-white/5 bg-[color-mix(in_srgb,var(--panel)_92%,transparent)] px-8 py-16 shadow-[var(--shadow-soft)]">
+            <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_30%_30%,rgba(92,100,255,0.25),transparent_40%),radial-gradient(circle_at_80%_20%,rgba(210,60,161,0.2),transparent_45%)]" />
+            <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+              <div className="max-w-2xl space-y-6">
+                <Badge tone="accent">Trusted payout workspace</Badge>
+                <h1 className="font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+                  Confident global payouts
+                </h1>
+                <p className="text-lg text-muted sm:max-w-xl">
+                  SwyftUp keeps contractor onboarding, billing, approvals, and payouts organized in one calm,
+                  auditable system so finance teams can move funds with certainty.
+                </p>
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <Button className="w-full sm:w-auto" asChild>
+                    <Link href={AUTH_PATH}>Access workspace</Link>
+                  </Button>
+                  <Button variant="secondary" className="w-full sm:w-auto" asChild>
+                    <Link href="/pricing">Compare plans</Link>
+                  </Button>
+                </div>
               </div>
+              <Card className="w-full max-w-md bg-white/5">
+                <CardHeader>
+                  <p className="text-xs uppercase tracking-wide text-muted">Live payout overview</p>
+                  <p className="text-2xl font-semibold">This week&apos;s releases</p>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted">Scheduled</span>
+                    <span className="text-lg font-semibold">$482,400</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted">In review</span>
+                    <span className="text-lg font-semibold text-[var(--accent)]">$128,900</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted">Exception holds</span>
+                    <span className="text-lg font-semibold text-[var(--brand-2)]">$14,200</span>
+                  </div>
+                  <div className="relative h-2 w-full rounded-full bg-white/5">
+                    <span className="absolute left-0 top-0 h-full w-[68%] rounded-full bg-[linear-gradient(90deg,var(--brand-1),var(--brand-2))]" />
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-            <Card className="w-full max-w-md bg-white/5">
-              <CardHeader>
-                <p className="text-xs uppercase tracking-wide text-muted">Live payout overview</p>
-                <p className="text-2xl font-semibold">This week&apos;s releases</p>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted">Scheduled</span>
-                  <span className="text-lg font-semibold">$482,400</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted">In review</span>
-                  <span className="text-lg font-semibold text-[var(--accent)]">$128,900</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted">Exception holds</span>
-                  <span className="text-lg font-semibold text-[var(--brand-2)]">$14,200</span>
-                </div>
-                <div className="relative h-2 w-full rounded-full bg-white/5">
-                  <span className="absolute left-0 top-0 h-full w-[68%] rounded-full bg-[linear-gradient(90deg,var(--brand-1),var(--brand-2))]" />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
+          </section>
 
         <section className="mt-14">
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -284,28 +248,9 @@ export default function Home() {
               </Button>
             </div>
           </div>
-        </section>
-      </main>
-
-      <footer className="border-t border-white/5 bg-panel/60">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-10 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="font-display text-lg font-semibold">SwyftUp</p>
-            <p className="text-sm text-muted">Payments and billing made trustworthy for modern teams.</p>
-          </div>
-          <div className="flex items-center gap-4 text-sm text-muted">
-            <Link href="/pricing" className="hover:text-text">
-              Pricing
-            </Link>
-            <Link href="/dashboard" className="hover:text-text">
-              Dashboard
-            </Link>
-            <a href="#security" className="hover:text-text">
-              Security
-            </a>
-          </div>
-        </div>
-      </footer>
-    </div>
+          </section>
+        </main>
+      </div>
+    </MarketingLayout>
   );
 }

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createPayoutAction, fundWalletAction, getDb, processJobsAction } from "@/lib/mock-db";
 import { formatCurrency } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
@@ -95,7 +96,7 @@ export default function WalletPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             <Button asChild className="w-full">
-              <a href="/app/wallet/withdraw">Open withdrawal flow</a>
+              <Link href="/app/wallet/withdraw">Open withdrawal flow</Link>
             </Button>
             <p className="text-sm text-muted">Best for contractors seeking low FX and quick arrivals.</p>
           </CardContent>
