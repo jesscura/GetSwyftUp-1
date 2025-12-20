@@ -1,4 +1,4 @@
-import NextAuth, { type Session } from "next-auth";
+import NextAuth, { type Session, type User } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import type { JWT } from "next-auth/jwt";
 import { z } from "zod";
@@ -45,7 +45,7 @@ export const authConfig = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: { role?: string } }) {
+    async jwt({ token, user }: { token: JWT; user?: User & { role?: string } }) {
       if (user && "role" in user) {
         token.role = user.role;
       }
@@ -54,7 +54,7 @@ export const authConfig = {
     async session({ session, token }: { session: Session; token: JWT }) {
       if (session.user) {
         session.user.id = token.sub;
-        session.user.role = token.role;
+        session.user.role = typeof token.role === "string" ? token.role : undefined;
       }
       return session;
     },

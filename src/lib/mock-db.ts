@@ -143,6 +143,9 @@ type MockDatabase = {
   jobs: Job[];
 };
 
+const PROVIDER_REF_MIN = 1000;
+const PROVIDER_REF_MAX = 9999;
+
 const seedData: MockDatabase = {
   org: { id: "org_swyftup", name: "SwyftUp Capital", currency: "USD" },
   users: [
@@ -566,7 +569,7 @@ export const createPayoutAction = async (formData: FormData) => {
     amount: parsed.data.amount,
     currency: "USD",
     status: "pending",
-    providerRef: `sim-${Math.floor(Math.random() * 9000 + 1000)}`,
+    providerRef: `sim-${Math.floor(Math.random() * (PROVIDER_REF_MAX - PROVIDER_REF_MIN + 1)) + PROVIDER_REF_MIN}`,
     createdAt: new Date().toISOString(),
   };
 
