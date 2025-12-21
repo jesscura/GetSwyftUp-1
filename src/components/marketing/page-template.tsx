@@ -15,15 +15,28 @@ type CTA = {
   secondary: CTAAction;
 };
 
+type Section = {
+  heading: string;
+  paragraphs: string[];
+  bullets?: string[];
+};
+
+type InternalLink = {
+  label: string;
+  href: string;
+};
+
 export type MarketingPageTemplateProps = {
   title: string;
   description: string;
   features: Feature[];
   cta: CTA;
+  sections?: Section[];
+  internalLinks?: InternalLink[];
   body?: string;
 };
 
-export function MarketingPageTemplate({ title, description, features, cta, body }: MarketingPageTemplateProps) {
+export function MarketingPageTemplate({ title, description, features, cta, sections, internalLinks, body }: MarketingPageTemplateProps) {
   return (
     <MarketingLayout>
       <div className="mx-auto max-w-5xl px-6 py-14 space-y-12">
@@ -34,6 +47,28 @@ export function MarketingPageTemplate({ title, description, features, cta, body 
             <p className="text-lg text-muted sm:max-w-3xl">{description}</p>
           </div>
         </section>
+
+        {sections && (
+          <section className="space-y-10">
+            {sections.map((section) => (
+              <div key={section.heading} className="space-y-3 rounded-[var(--radius-card)] border border-white/5 bg-white/5 p-6">
+                <h2 className="font-display text-2xl font-semibold text-text">{section.heading}</h2>
+                {section.paragraphs.map((paragraph, idx) => (
+                  <p key={idx} className="text-sm leading-6 text-muted">
+                    {paragraph}
+                  </p>
+                ))}
+                {section.bullets && (
+                  <ul className="list-disc space-y-2 pl-5 text-sm leading-6 text-muted">
+                    {section.bullets.map((bullet) => (
+                      <li key={bullet}>{bullet}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </section>
+        )}
 
         <section className="grid gap-4 md:grid-cols-3">
           {features.map((feature) => (
@@ -54,6 +89,21 @@ export function MarketingPageTemplate({ title, description, features, cta, body 
         {body && (
           <section className="rounded-[var(--radius-card)] border border-white/5 bg-white/5 p-6 text-sm leading-6 text-muted">
             {body}
+          </section>
+        )}
+
+        {internalLinks && internalLinks.length > 0 && (
+          <section className="space-y-3 rounded-[var(--radius-card)] border border-white/5 bg-white/5 p-6">
+            <h2 className="font-display text-xl font-semibold text-text">Suggested internal links</h2>
+            <ul className="list-disc space-y-2 pl-5 text-sm leading-6 text-muted">
+              {internalLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className="text-[var(--accent)] underline decoration-[var(--accent)]/50 underline-offset-4">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </section>
         )}
 

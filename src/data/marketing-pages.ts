@@ -4,6 +4,8 @@ export type MarketingPageContent = MarketingPageTemplateProps & {
   slug: string;
   seoTitle: string;
   seoDescription: string;
+  primaryKeyword?: string;
+  secondaryKeywords?: string[];
 };
 
 export const marketingPages: MarketingPageContent[] = [
@@ -276,15 +278,61 @@ export const marketingPages: MarketingPageContent[] = [
   },
   {
     slug: "pricing",
-    seoTitle: "Pricing | SwyftUp",
-    seoDescription: "Transparent pricing with built-in workflows for global contractor payments.",
-    title: "Pricing that stays simple as you grow.",
+    seoTitle: "Pricing | Global Contractor Payments",
+    seoDescription: "Contractor payment pricing with transparent tiers, FX clarity, and built-in approvals.",
+    primaryKeyword: "contractor payment pricing",
+    secondaryKeywords: ["global payouts pricing", "FX fees transparency", "contractor payment plans", "remote team pricing"],
+    title: "Pricing that keeps global contractor payments predictable.",
     description:
-      "Start small, scale up. Transparent fees and clear value—built for global contractor payments.",
+      "Choose a plan that matches your contractor volume and payout corridors. SwyftUp keeps fees transparent, separates FX markup, and includes approvals so finance teams can budget with confidence.",
+    sections: [
+      {
+        heading: "Transparent tiers",
+        paragraphs: [
+          "Pick a tier that fits your current volume and upgrade only when you need to. Every plan includes onboarding, invoice intake, approvals, and payout tracking.",
+        ],
+        bullets: [
+          "Clear monthly platform fees by team size",
+          "Usage aligned to payout volume",
+          "No hidden add-ons for approvals or audit logs",
+        ],
+      },
+      {
+        heading: "FX and payout clarity",
+        paragraphs: [
+          "We separate payout fees from FX markup so you always know the landed cost before sending money.",
+          "Contractors see the same transparency, reducing back-and-forth on expected amounts.",
+        ],
+        bullets: [
+          "FX markup shown over mid-market rate",
+          "Per-transfer payout fees displayed pre-approval",
+          "Corridor-specific timelines documented",
+        ],
+      },
+      {
+        heading: "Built-in controls included",
+        paragraphs: [
+          "Approvals, role-based access, and audit-ready logs come standard—no extra module required.",
+          "This keeps finance in control while avoiding bloated enterprise pricing.",
+        ],
+      },
+      {
+        heading: "Help choosing a plan",
+        paragraphs: [
+          "If you’re migrating from manual bank transfers or another platform, we’ll map your corridors, volumes, and compliance needs to the right tier.",
+        ],
+      },
+    ],
     features: [
-      { title: "Transparent tiers", description: "Choose a plan that fits your team size." },
-      { title: "Fair FX approach", description: "Clear FX and payout fees (no surprises)." },
-      { title: "Built-in workflows", description: "Approvals, tracking, and audit trails included." },
+      { title: "Predictable tiers", description: "Plans mapped to team size and payout volume." },
+      { title: "FX visibility", description: "Markup over mid-market shown before approvals." },
+      { title: "Controls included", description: "Approvals and audit logs are standard, not add-ons." },
+    ],
+    internalLinks: [
+      { label: "Fees & FX breakdown", href: "/pricing/fees-fx" },
+      { label: "Compare with GetThera", href: "/compare/getthera" },
+      { label: "Security overview", href: "/security" },
+      { label: "Contact sales", href: "/contact" },
     ],
     cta: {
       headline: "Choose a plan and start paying globally.",
@@ -295,15 +343,64 @@ export const marketingPages: MarketingPageContent[] = [
   },
   {
     slug: "pricing/fees-fx",
-    seoTitle: "Fees & FX | SwyftUp Pricing",
-    seoDescription: "Understand payout fees and FX transparency before you send money.",
-    title: "Fees & FX you can understand.",
+    seoTitle: "Fees & FX | International Payout Transparency",
+    seoDescription: "International payout fees broken down with FX markup visibility and corridor timelines.",
+    primaryKeyword: "international payout fees",
+    secondaryKeywords: ["FX markup transparency", "cross-border payout costs", "contractor payout fees", "mid-market rate"],
+    title: "Fees, FX, and timelines—made clear before you pay.",
     description:
-      "Know what you’ll pay and what contractors will receive—before you send a payout.",
+      "Understand exactly what you and your contractors will pay before sending money. SwyftUp separates FX markup from payout fees and shows expected timelines by corridor so you can plan cash flow confidently.",
+    sections: [
+      {
+        heading: "Payout fee breakdown",
+        paragraphs: [
+          "See per-transfer fees before you submit a payout. Finance teams can approve with full visibility into cost components.",
+        ],
+        bullets: [
+          "Flat or corridor-based payout fees shown upfront",
+          "No surprise add-ons for approvals or tracking",
+          "Contractors see what they’ll receive after fees",
+        ],
+      },
+      {
+        heading: "FX transparency",
+        paragraphs: [
+          "We display the FX markup over mid-market so totals stay predictable. You know the exact conversion used for each payout.",
+        ],
+        bullets: [
+          "Live FX reference with markup disclosed",
+          "Audit trail of conversion rate per payout",
+          "Visibility for both payers and contractors",
+        ],
+      },
+      {
+        heading: "Processing times by corridor",
+        paragraphs: [
+          "Each corridor includes expected delivery times and what could delay a transfer, so teams can set the right expectations.",
+        ],
+        bullets: [
+          "Clear status updates: pending, in review, paid",
+          "Exceptions flagged early for required info",
+          "Notifications to contractors when funds are sent",
+        ],
+      },
+      {
+        heading: "How to evaluate costs",
+        paragraphs: [
+          "Compare total landed costs—including FX—to your current provider. We’ll map high-volume corridors to ensure predictability.",
+        ],
+      },
+    ],
     features: [
-      { title: "Payout fees", description: "Straightforward line items—shown before you submit a transfer." },
-      { title: "FX markup", description: "Clear view of the markup over mid-market so totals stay predictable." },
-      { title: "Processing times", description: "Expected timelines by corridor with status tracking." },
+      { title: "Line-item clarity", description: "Fees shown before approval so finance can budget accurately." },
+      { title: "FX visibility", description: "Markup over mid-market displayed for every payout." },
+      { title: "Timeline expectations", description: "Corridor-specific delivery windows with status tracking." },
+    ],
+    internalLinks: [
+      { label: "Pricing overview", href: "/pricing" },
+      { label: "Compare with GetThera", href: "/compare/getthera" },
+      { label: "Security", href: "/security" },
+      { label: "Contact sales", href: "/contact" },
     ],
     cta: {
       headline: "No surprises. Just clear costs.",
@@ -314,15 +411,68 @@ export const marketingPages: MarketingPageContent[] = [
   },
   {
     slug: "compare/getthera",
-    seoTitle: "SwyftUp vs GetThera | Comparison",
-    seoDescription: "See how SwyftUp delivers faster payouts, transparent costs, and cleaner workflows.",
-    title: "SwyftUp vs GetThera",
+    seoTitle: "SwyftUp vs GetThera | Contractor Payments",
+    seoDescription: "Compare SwyftUp vs GetThera on payout speed, FX transparency, and workflow control.",
+    primaryKeyword: "SwyftUp vs GetThera",
+    secondaryKeywords: ["GetThera alternative", "contractor payment comparison", "payout speed comparison", "FX fee transparency"],
+    title: "SwyftUp vs GetThera: choose faster, clearer contractor payments.",
     description:
-      "A modern contractor payments platform built for speed, transparency, and access—without enterprise bloat.",
+      "SwyftUp focuses on payout speed, transparent FX, and a contractor-first experience. Compare how we stack up against GetThera on access to funds, total cost clarity, and workflow simplicity.",
+    sections: [
+      {
+        heading: "Where SwyftUp leads",
+        paragraphs: [
+          "Faster access to funds with a virtual debit card and predictable timelines.",
+          "Transparent FX and fees shown before approval—no guessing at landed amounts.",
+        ],
+        bullets: [
+          "Contractor-first virtual debit card experience",
+          "Line-item FX markup and payout fees",
+          "Lean UI designed for distributed teams",
+        ],
+      },
+      {
+        heading: "Workflow control for finance",
+        paragraphs: [
+          "Role-based approvals, clear exception handling, and audit-ready records are included without add-ons.",
+          "Finance teams keep visibility across onboarding, invoice intake, and payouts in one place.",
+        ],
+        bullets: [
+          "Approval routing by amount, team, or corridor",
+          "Real-time dashboard for pending and paid items",
+          "Exports that stay accounting-ready",
+        ],
+      },
+      {
+        heading: "Cost comparison approach",
+        paragraphs: [
+          "We separate FX markup from payout fees so you can compare true landed costs to GetThera.",
+          "Evaluate corridors, volumes, and contractor experience side by side.",
+        ],
+      },
+      {
+        heading: "Decision checklist",
+        paragraphs: [
+          "Use this framework when choosing between SwyftUp and GetThera.",
+        ],
+        bullets: [
+          "How fast do contractors access funds?",
+          "Is FX markup disclosed over mid-market?",
+          "Are approvals and audit logs included, or add-ons?",
+          "Is the contractor experience modern and mobile-friendly?",
+        ],
+      },
+    ],
     features: [
-      { title: "Faster access to funds", description: "Virtual debit card experience designed for contractors." },
-      { title: "Transparent costs", description: "Clear fees and FX visibility." },
-      { title: "Cleaner workflows", description: "Onboarding, invoicing, approvals, and payouts in one place." },
+      { title: "Speed to funds", description: "Virtual debit card and predictable payout timelines." },
+      { title: "Cost clarity", description: "FX and fees disclosed before approval to prevent surprises." },
+      { title: "Workflow simplicity", description: "Onboarding, invoicing, approvals, and payouts in one platform." },
+    ],
+    internalLinks: [
+      { label: "Pricing", href: "/pricing" },
+      { label: "Fees & FX", href: "/pricing/fees-fx" },
+      { label: "Security", href: "/security" },
+      { label: "Why SwyftUp", href: "/why-swyftup" },
     ],
     cta: {
       headline: "See if SwyftUp is the better fit.",
@@ -333,14 +483,48 @@ export const marketingPages: MarketingPageContent[] = [
   },
   {
     slug: "blog",
-    seoTitle: "Blog | SwyftUp",
-    seoDescription: "Insights, guides, and product updates for paying and working globally.",
-    title: "SwyftUp Blog",
-    description: "Updates and guides for global contractor payments and remote work.",
+    seoTitle: "Global Contractor Payments Blog | SwyftUp",
+    seoDescription: "Guides and playbooks on global contractor payments, FX, and remote work finance.",
+    primaryKeyword: "global contractor payments blog",
+    secondaryKeywords: ["remote work finance tips", "contractor payout guides", "FX best practices", "finance ops playbooks"],
+    title: "Insights on global contractor payments and remote work finance.",
+    description: "Read actionable guides, playbooks, and product updates that help finance, ops, and contractors move money across borders with confidence.",
+    sections: [
+      {
+        heading: "What we publish",
+        paragraphs: [
+          "Deep dives on payout rails, corridor timelines, and cost models.",
+          "Templates for approvals, onboarding, and invoice reviews.",
+        ],
+        bullets: [
+          "Finance operations playbooks",
+          "Contractor experience best practices",
+          "Product updates and roadmap context",
+        ],
+      },
+      {
+        heading: "Who it’s for",
+        paragraphs: [
+          "Finance and ops leaders running global teams, agencies managing multiple clients, and contractors who want clearer payouts.",
+        ],
+      },
+      {
+        heading: "How to use the blog",
+        paragraphs: [
+          "Bookmark pillar posts for your team onboarding, share corridor-specific guides with contractors, and stay updated on new SwyftUp features.",
+        ],
+      },
+    ],
     features: [
       { title: "Global payout basics", description: "Understand rails, timelines, and common pitfalls." },
       { title: "Finance ops playbooks", description: "Approval workflows and audit readiness." },
       { title: "Remote work money tips", description: "How contractors manage cash flow abroad." },
+    ],
+    internalLinks: [
+      { label: "Pricing", href: "/pricing" },
+      { label: "Why SwyftUp", href: "/why-swyftup" },
+      { label: "Help Center", href: "/help" },
+      { label: "Contact", href: "/contact" },
     ],
     cta: {
       headline: "Want updates in your inbox?",
@@ -351,14 +535,68 @@ export const marketingPages: MarketingPageContent[] = [
   },
   {
     slug: "help",
-    seoTitle: "Help Center | SwyftUp",
-    seoDescription: "Find answers fast for setup, payouts, onboarding, and troubleshooting.",
-    title: "Help Center",
-    description: "Guides for onboarding, payouts, and troubleshooting.",
+    seoTitle: "Help Center | Contractor Payment Support",
+    seoDescription: "Contractor payment help center for setup, payouts, approvals, and troubleshooting.",
+    primaryKeyword: "contractor payment help center",
+    secondaryKeywords: ["SwyftUp support", "payout troubleshooting", "contractor onboarding help", "virtual card support"],
+    title: "Help Center for global contractor payments.",
+    description: "Find concise guides to set up payouts, track statuses, and resolve issues fast—whether you’re finance, ops, or a contractor.",
+    sections: [
+      {
+        heading: "Start fast",
+        paragraphs: [
+          "Create your account, add contractor profiles, and connect payout preferences with step-by-step guides.",
+        ],
+        bullets: [
+          "Account setup checklist",
+          "Contractor onboarding templates",
+          "First payout walkthrough",
+        ],
+      },
+      {
+        heading: "Payouts and timelines",
+        paragraphs: [
+          "Understand payout statuses, corridor timelines, and what to check when something is delayed.",
+        ],
+        bullets: [
+          "Status definitions: pending, in review, paid",
+          "Typical delivery times by region",
+          "How to submit required documents quickly",
+        ],
+      },
+      {
+        heading: "Approvals and roles",
+        paragraphs: [
+          "Learn how approvals are routed, how to add approvers, and how to manage exceptions.",
+        ],
+        bullets: [
+          "Configure approvers by team or amount",
+          "Resolve exceptions before cutoff times",
+          "Export approval history for audits",
+        ],
+      },
+      {
+        heading: "Cards, security, and access",
+        paragraphs: [
+          "Manage virtual debit cards, reset credentials, and review security recommendations.",
+        ],
+        bullets: [
+          "Virtual card activation steps",
+          "Access recovery and MFA tips",
+          "Reporting suspicious activity",
+        ],
+      },
+    ],
     features: [
-      { title: "Getting started", description: "Set up your account and first payout." },
-      { title: "Payout support", description: "Understand statuses, timelines, and issues." },
-      { title: "Account & security", description: "Manage access and keep data safe." },
+      { title: "Getting started", description: "Set up your account and first payout quickly." },
+      { title: "Payout support", description: "Timelines, statuses, and issue resolution steps." },
+      { title: "Account & security", description: "Access management and security best practices." },
+    ],
+    internalLinks: [
+      { label: "FAQs", href: "/faqs" },
+      { label: "Fees & FX", href: "/pricing/fees-fx" },
+      { label: "Security", href: "/security" },
+      { label: "Contact support", href: "/contact" },
     ],
     cta: {
       headline: "Still need help?",
@@ -369,14 +607,57 @@ export const marketingPages: MarketingPageContent[] = [
   },
   {
     slug: "faqs",
-    seoTitle: "FAQs | SwyftUp",
-    seoDescription: "Quick answers to the most common SwyftUp questions.",
-    title: "FAQs",
-    description: "Quick answers to common questions.",
+    seoTitle: "Contractor Payment FAQs | SwyftUp",
+    seoDescription: "Contractor payment FAQs covering payouts, FX, security, and virtual debit cards.",
+    primaryKeyword: "contractor payment FAQs",
+    secondaryKeywords: ["payout timelines", "FX fees questions", "virtual debit card FAQ", "contractor onboarding FAQ"],
+    title: "Frequently asked questions about SwyftUp.",
+    description: "Straight answers to the most common questions on payouts, FX, security, and getting started.",
+    sections: [
+      {
+        heading: "Payouts and fees",
+        paragraphs: [
+          "How long do payouts take? Most corridors complete within documented timelines shown before approval.",
+          "What are the fees? We separate payout fees from FX markup and show both before you send.",
+        ],
+        bullets: [
+          "See corridor timelines in the Help Center",
+          "FX markup displayed over mid-market rate",
+          "Contractors see what they will receive after fees",
+        ],
+      },
+      {
+        heading: "Virtual debit card",
+        paragraphs: [
+          "When is the card available? After your payout is approved, spend readiness follows shortly for online purchases.",
+          "What controls exist? Basic controls help keep spending predictable.",
+        ],
+      },
+      {
+        heading: "Onboarding and approvals",
+        paragraphs: [
+          "How do we onboard contractors? Use templates to capture required details and route approvals before money moves.",
+          "Who can approve payments? Role-based access lets you define approvers by team or amount thresholds.",
+        ],
+      },
+      {
+        heading: "Security and compliance",
+        paragraphs: [
+          "How is data protected? Sensitive data is encrypted in transit and at rest with role-based access.",
+          "Can we get documentation? Yes—request questionnaires, DPA, and subprocessors list via contact.",
+        ],
+      },
+    ],
     features: [
-      { title: "How payouts work", description: "Timelines, fees, and approval steps." },
-      { title: "Virtual card basics", description: "How contractors access and use funds." },
-      { title: "Security & compliance", description: "How SwyftUp protects your data." },
+      { title: "How payouts work", description: "Timelines, fees, and approval steps in plain language." },
+      { title: "Virtual card basics", description: "When funds are available and how to use them." },
+      { title: "Security & compliance", description: "Data protection, roles, and documentation access." },
+    ],
+    internalLinks: [
+      { label: "Help Center", href: "/help" },
+      { label: "Pricing & Fees", href: "/pricing/fees-fx" },
+      { label: "Security", href: "/security" },
+      { label: "Contact", href: "/contact" },
     ],
     cta: {
       headline: "Have a question not listed?",
@@ -387,15 +668,63 @@ export const marketingPages: MarketingPageContent[] = [
   },
   {
     slug: "security",
-    seoTitle: "Compliance & Security | SwyftUp",
-    seoDescription: "Security practices built for modern finance operations and audit readiness.",
-    title: "Compliance & Security",
+    seoTitle: "Security & Compliance | SwyftUp",
+    seoDescription: "Fintech security and compliance practices with clear controls, audit trails, and data protections.",
+    primaryKeyword: "fintech security and compliance",
+    secondaryKeywords: ["contractor payment security", "audit-ready controls", "role-based access", "secure payouts"],
+    title: "Security and compliance that reduce buyer risk.",
     description:
-      "Security practices designed for modern finance operations—built for accountability and audit readiness with a security-first approach.",
+      "SwyftUp applies a security-first approach to contractor payments with encryption, access controls, and audit-ready visibility. We avoid overpromising certifications and instead offer clear documentation that maps to your procurement checklist.",
+    sections: [
+      {
+        heading: "Data protection by design",
+        paragraphs: [
+          "Sensitive information is encrypted in transit and at rest, with environment isolation for production workloads.",
+          "We continuously review data handling to minimize exposure and keep records traceable.",
+        ],
+        bullets: [
+          "Encryption for sensitive contractor and payout data",
+          "Access minimized by role and need-to-know",
+          "Logging for key data events to support investigations",
+        ],
+      },
+      {
+        heading: "Access, roles, and approvals",
+        paragraphs: [
+          "Role-based access control ensures the right approvers authorize payouts before funds move.",
+          "Separation of duties reduces risk for finance and operations teams.",
+        ],
+        bullets: [
+          "Granular roles for finance, ops, and reviewers",
+          "Approval workflows configurable by amount or team",
+          "Audit trail of who approved what and when",
+        ],
+      },
+      {
+        heading: "Reliability and monitoring",
+        paragraphs: [
+          "Operational alerts monitor payout flows and integrations so exceptions are caught early.",
+          "Status reporting keeps teams informed about incidents or delays.",
+        ],
+      },
+      {
+        heading: "Documentation you can review",
+        paragraphs: [
+          "We provide security questionnaires, data flow overviews, and subprocessors lists on request.",
+          "No inflated claims—just clear answers your procurement team can verify.",
+        ],
+      },
+    ],
     features: [
-      { title: "Data protection", description: "Encryption and secure handling of sensitive information." },
-      { title: "Access controls", description: "Role-based access and approvals." },
-      { title: "Audit trail", description: "Track key actions for accountability." },
+      { title: "Encryption", description: "Protects sensitive data in transit and at rest." },
+      { title: "Role-based controls", description: "Approvals and permissions matched to your team structure." },
+      { title: "Audit-ready logs", description: "Traceable records for payouts and access changes." },
+    ],
+    internalLinks: [
+      { label: "Data Processing Agreement", href: "/dpa" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Compare with GetThera", href: "/compare/getthera" },
+      { label: "Contact for security docs", href: "/contact" },
     ],
     cta: {
       headline: "Need security documentation?",
@@ -443,37 +772,154 @@ export const marketingPages: MarketingPageContent[] = [
   },
   {
     slug: "about",
-    seoTitle: "About SwyftUp",
-    seoDescription: "Built to make global contractor payouts simpler, faster, and more accessible.",
-    title: "About SwyftUp",
+    seoTitle: "About SwyftUp | Global Contractor Payments",
+    seoDescription: "Meet the team building a global contractor payments platform with trusted controls.",
+    primaryKeyword: "global contractor payments platform",
+    secondaryKeywords: [
+      "remote work finance",
+      "cross-border payouts",
+      "fintech for contractors",
+      "virtual debit card payouts",
+    ],
+    title: "Built to modernize global contractor payments.",
     description:
-      "SwyftUp is built to support the people who work globally—making payouts simpler, faster, and more accessible.",
+      "SwyftUp exists to make cross-border payouts simple, predictable, and faster for contractors and the teams who rely on them. We combine transparent fees, built-in approvals, and a contractor-first experience so getting paid becomes the easiest part of remote work.",
+    sections: [
+      {
+        heading: "Why we built SwyftUp",
+        paragraphs: [
+          "Global teams struggle with fragmented payout tools, unclear FX, and slow access to funds. SwyftUp removes that friction with a single platform for onboarding, approvals, and multi-currency payouts.",
+          "Our focus is trust: clear timelines, transparent fees, and a predictable experience for finance leaders and contractors alike.",
+        ],
+        bullets: [
+          "One platform for onboarding, billing, approvals, and payouts",
+          "Transparent FX and fees shown before money moves",
+          "Contractor-friendly virtual debit card for faster access to earnings",
+        ],
+      },
+      {
+        heading: "Founder credibility",
+        paragraphs: [
+          "SwyftUp is led by operators who have managed remote teams across regions. The product reflects lived experience navigating compliance checks, payout delays, and contractor retention.",
+          "We focus on practical controls and usability—no enterprise bloat, just the essentials teams need to stay compliant and pay on time.",
+        ],
+        bullets: [
+          "Built with finance, ops, and contractor feedback loops",
+          "Security-first approach with clear approval trails",
+          "Roadmap shaped by real remote work pain points",
+        ],
+      },
+      {
+        heading: "How teams use SwyftUp",
+        paragraphs: [
+          "Startups and agencies standardize onboarding, invoice intake, and approvals to avoid last-minute payout surprises.",
+          "Finance teams get visibility into every step, while contractors see predictable timelines and transparent amounts.",
+        ],
+        bullets: [
+          "Multi-currency payouts with status tracking",
+          "Role-based approvals to control spend",
+          "Audit-ready records without extra manual work",
+        ],
+      },
+      {
+        heading: "Our commitment to trust",
+        paragraphs: [
+          "We avoid overpromising certifications and instead provide clarity on our security posture, subprocessors, and data handling.",
+          "Teams can request questionnaires, review policies, and map SwyftUp to their procurement checklist.",
+        ],
+      },
+    ],
     features: [
-      { title: "Built from real experience", description: "Designed by someone who understands remote work firsthand." },
-      { title: "Global-first", description: "Made for cross-border payments and distributed teams." },
-      { title: "Contractor-friendly", description: "A better experience that helps teams retain talent." },
+      { title: "Global-first", description: "Cross-border payouts with predictable timelines and tracking." },
+      { title: "Finance-grade controls", description: "Role-based approvals and audit-friendly records by default." },
+      { title: "Contractor-first UX", description: "Virtual debit card access and transparent fees to build trust." },
+    ],
+    internalLinks: [
+      { label: "See pricing", href: "/pricing" },
+      { label: "Security & compliance", href: "/security" },
+      { label: "Compare with GetThera", href: "/compare/getthera" },
+      { label: "Contact the team", href: "/contact" },
     ],
     cta: {
-      headline: "Want to build with us?",
-      subhead: "Partner with SwyftUp or request a demo.",
+      headline: "Talk with the team building SwyftUp.",
+      subhead: "Get a walkthrough of our global contractor payments platform.",
       primary: { label: "Book a Demo", href: "/contact" },
-      secondary: { label: "Contact", href: "/contact" },
+      secondary: { label: "See Pricing", href: "/pricing" },
     },
   },
   {
     slug: "why-swyftup",
-    seoTitle: "Why SwyftUp",
-    seoDescription: "Choose a platform that makes getting paid the easiest part of remote work.",
-    title: "Why SwyftUp",
-    description: "Because getting paid shouldn’t be the hardest part of remote work.",
+    seoTitle: "Why SwyftUp | Built for Remote Teams",
+    seoDescription: "Contractor payment platform for remote teams that need speed, transparency, and control.",
+    primaryKeyword: "contractor payment platform for remote teams",
+    secondaryKeywords: ["global contractor payouts", "remote team payments", "transparent FX fees", "virtual debit card"],
+    title: "Why SwyftUp is the contractor payment platform for remote teams.",
+    description:
+      "Remote teams need payouts that are fast, predictable, and transparent. SwyftUp brings onboarding, invoice intake, approvals, and payouts into one flow—built for finance rigor and a contractor-first experience.",
+    sections: [
+      {
+        heading: "Built for distributed finance workflows",
+        paragraphs: [
+          "SwyftUp keeps approvals, payout timelines, and FX visibility in one place, so finance leaders can sign off with confidence.",
+          "Clear roles and audit-ready logs reduce risk while keeping teams moving quickly.",
+        ],
+        bullets: [
+          "Role-based approvals with clear exceptions",
+          "Standardized invoice intake that cuts back-and-forth",
+          "Live status for pending, approved, and paid items",
+        ],
+      },
+      {
+        heading: "Contractor-first experience",
+        paragraphs: [
+          "We focus on what contractors need: predictable payouts, transparent fees, and faster access to funds via a virtual debit card.",
+          "A smooth payout experience helps you retain talent across regions.",
+        ],
+        bullets: [
+          "Fee and FX clarity before money moves",
+          "Virtual debit card for quicker spend readiness",
+          "Notifications so contractors know what to expect",
+        ],
+      },
+      {
+        heading: "Operational simplicity for remote teams",
+        paragraphs: [
+          "Distributed teams avoid fragmented tools with SwyftUp’s unified onboarding, invoicing, and payout workflows.",
+          "Less manual work for ops; fewer surprises for finance.",
+        ],
+        bullets: [
+          "Single source of truth for contractor profiles and payout preferences",
+          "Templates to standardize onboarding across regions",
+          "Exports that stay accounting-ready",
+        ],
+      },
+      {
+        heading: "Proof points against GetThera",
+        paragraphs: [
+          "SwyftUp emphasizes speed to funds, transparent costs, and a clean contractor UX instead of enterprise-heavy workflows.",
+          "Compare timelines, FX clarity, and contractor access to funds when evaluating platforms.",
+        ],
+        bullets: [
+          "Faster access via virtual debit card experience",
+          "Clear FX markup and payout fees shown upfront",
+          "Lean, modern UI designed for remote teams",
+        ],
+      },
+    ],
     features: [
-      { title: "Faster access", description: "Virtual debit card experience for day-to-day spending." },
-      { title: "Transparent fees", description: "Clarity builds trust for teams and contractors." },
-      { title: "Less admin", description: "Centralized workflows that reduce back-and-forth." },
+      { title: "Speed to funds", description: "Virtual debit card plus predictable payout tracking." },
+      { title: "Transparent costs", description: "See FX and fees before approval to prevent surprises." },
+      { title: "Control with less admin", description: "Approvals and audit-ready records without manual work." },
+    ],
+    internalLinks: [
+      { label: "Compare SwyftUp vs GetThera", href: "/compare/getthera" },
+      { label: "Pricing", href: "/pricing" },
+      { label: "Security", href: "/security" },
+      { label: "Get Paid Faster", href: "/get-paid-faster" },
     ],
     cta: {
-      headline: "Choose a platform built for people.",
-      subhead: "Start now or see how it compares.",
+      headline: "See how SwyftUp serves remote teams.",
+      subhead: "Start now or compare us directly to GetThera.",
       primary: { label: "Get Started", href: "/auth/sign-up" },
       secondary: { label: "Compare with GetThera", href: "/compare/getthera" },
     },
@@ -552,15 +998,64 @@ export const marketingPages: MarketingPageContent[] = [
   },
   {
     slug: "get-paid-faster",
-    seoTitle: "Get Paid Faster | SwyftUp",
-    seoDescription: "Reduce payout delays and access funds sooner with SwyftUp’s virtual card experience.",
-    title: "Get paid faster—without the usual friction.",
+    seoTitle: "Get Paid Faster as a Freelancer | SwyftUp",
+    seoDescription: "Get paid faster as a freelancer with transparent fees, FX clarity, and virtual debit card access.",
+    primaryKeyword: "get paid faster as a freelancer",
+    secondaryKeywords: ["fast contractor payouts", "virtual debit card payouts", "transparent freelancer fees", "remote worker payments"],
+    title: "Get paid faster—built for freelancers and remote contractors.",
     description:
-      "Built to reduce delays between earning and accessing your money—especially for overseas and remote work.",
+      "SwyftUp shortens the time between invoice approval and usable funds. Freelancers get transparency on what they’ll receive, plus a virtual debit card for faster access to their earnings.",
+    sections: [
+      {
+        heading: "Know exactly what you’ll receive",
+        paragraphs: [
+          "See FX and fees before payout so there are no surprises when funds land.",
+        ],
+        bullets: [
+          "Line-item FX markup over mid-market",
+          "Clear payout fees by corridor",
+          "Status updates from pending to paid",
+        ],
+      },
+      {
+        heading: "Access funds faster",
+        paragraphs: [
+          "Use the virtual debit card to spend online sooner after approval. No waiting for physical cards or repeated bank delays.",
+        ],
+        bullets: [
+          "Virtual debit card linked to your payouts",
+          "Spend readiness shortly after approval",
+          "Reduced friction for everyday expenses",
+        ],
+      },
+      {
+        heading: "Fewer steps, less chasing",
+        paragraphs: [
+          "SwyftUp keeps your profile, payout preferences, and invoices organized so finance teams can approve quickly.",
+        ],
+        bullets: [
+          "Centralized profile and payment preferences",
+          "Invoice submissions in a consistent format",
+          "Notifications when approvals are done",
+        ],
+      },
+      {
+        heading: "Built for remote work realities",
+        paragraphs: [
+          "Whether you’re overseas or traveling, SwyftUp provides predictable payout timelines and a modern experience that respects your time.",
+        ],
+      },
+    ],
     features: [
-      { title: "Fewer payout steps", description: "A smoother flow from approval to access." },
-      { title: "Virtual card access", description: "Use funds online sooner." },
-      { title: "Fee transparency", description: "Know what you’ll receive before you withdraw." },
+      { title: "Transparency first", description: "See FX and fees before payout so amounts are predictable." },
+      { title: "Virtual debit card", description: "Spend online faster without waiting for physical cards." },
+      { title: "Reliable timelines", description: "Clear status updates from invoice to payout." },
+    ],
+    internalLinks: [
+      { label: "Pricing", href: "/pricing" },
+      { label: "Fees & FX", href: "/pricing/fees-fx" },
+      { label: "Help Center", href: "/help" },
+      { label: "Security", href: "/security" },
     ],
     cta: {
       headline: "Upgrade your payout experience.",
@@ -572,16 +1067,47 @@ export const marketingPages: MarketingPageContent[] = [
   {
     slug: "privacy",
     seoTitle: "Privacy Policy | SwyftUp",
-    seoDescription: "Understand how SwyftUp collects, uses, and protects your data.",
+    seoDescription: "How SwyftUp collects, uses, and protects data for global contractor payments.",
+    primaryKeyword: "SwyftUp privacy policy",
+    secondaryKeywords: ["contractor data protection", "privacy practices", "data rights", "fintech privacy"],
     title: "Privacy Policy",
-    description: "How SwyftUp collects, uses, and protects data across your account and payment activity.",
+    description: "Learn how SwyftUp collects, uses, and safeguards data for your account and payment activity.",
+    sections: [
+      {
+        heading: "What we collect",
+        paragraphs: [
+          "Account details, usage information, and transaction metadata needed to operate the service.",
+        ],
+        bullets: [
+          "Profile and contact information",
+          "Payout and transaction data for processing",
+          "Technical logs to secure and improve the product",
+        ],
+      },
+      {
+        heading: "How we use your data",
+        paragraphs: [
+          "To provide services, prevent fraud, comply with legal obligations, and improve performance.",
+        ],
+      },
+      {
+        heading: "Your choices and rights",
+        paragraphs: [
+          "You can request access, corrections, or deletion where applicable and manage communication preferences.",
+        ],
+      },
+      {
+        heading: "Placeholder notice",
+        paragraphs: [
+          "This is a placeholder summary. Replace with the approved, full Privacy Policy that details collection, use, retention, lawful bases, and data subject rights.",
+        ],
+      },
+    ],
     features: [
       { title: "What we collect", description: "Basic account, usage, and transaction-related data." },
       { title: "How we use it", description: "To provide services, prevent fraud, and improve performance." },
       { title: "Your rights", description: "Access, deletion, and preference controls." },
     ],
-    body:
-      "Placeholder policy. TODO: Replace with the full, approved Privacy Policy covering collection, use, retention, and data subject rights.",
     cta: {
       headline: "Questions about privacy?",
       subhead: "Contact us for clarification.",
@@ -592,16 +1118,43 @@ export const marketingPages: MarketingPageContent[] = [
   {
     slug: "terms",
     seoTitle: "Terms of Service | SwyftUp",
-    seoDescription: "The terms and conditions for using SwyftUp.",
+    seoDescription: "Terms of service outlining account use, payments, and acceptable use for SwyftUp.",
+    primaryKeyword: "SwyftUp terms of service",
+    secondaryKeywords: ["contractor payment terms", "acceptable use", "service limitations", "billing terms"],
     title: "Terms of Service",
-    description: "Terms covering account responsibilities, payments and fees, acceptable use, and service limitations.",
+    description: "Understand the terms that govern your use of SwyftUp, including account responsibilities, payments, and acceptable use.",
+    sections: [
+      {
+        heading: "Account responsibilities",
+        paragraphs: [
+          "How accounts are created, who can access them, and obligations to keep credentials secure.",
+        ],
+      },
+      {
+        heading: "Payments and fees",
+        paragraphs: [
+          "Details on platform charges, payout fees, FX considerations, and billing cycles.",
+        ],
+      },
+      {
+        heading: "Acceptable use and limitations",
+        paragraphs: [
+          "What is permitted, prohibited activities, and how we handle violations.",
+        ],
+      },
+      {
+        heading: "Disputes and changes",
+        paragraphs: [
+          "How disputes are addressed, and how updates to the Terms are communicated.",
+          "Placeholder notice: replace this summary with the full, approved Terms of Service reviewed by legal.",
+        ],
+      },
+    ],
     features: [
       { title: "Account terms", description: "Responsibilities and acceptable use." },
       { title: "Payments & fees", description: "How billing and payouts are handled." },
       { title: "Limitations", description: "Liability and dispute policies." },
     ],
-    body:
-      "Placeholder terms. TODO: Insert the official Terms of Service reviewed by legal, including service usage, payment obligations, and dispute resolution.",
     cta: {
       headline: "Need help understanding the terms?",
       subhead: "Contact us and we’ll help.",
@@ -612,16 +1165,41 @@ export const marketingPages: MarketingPageContent[] = [
   {
     slug: "cookies",
     seoTitle: "Cookie Policy | SwyftUp",
-    seoDescription: "Learn how SwyftUp uses cookies and how to manage your preferences.",
+    seoDescription: "Cookie policy detailing essential, analytics, and preference cookies with management options.",
+    primaryKeyword: "SwyftUp cookie policy",
+    secondaryKeywords: ["cookie preferences", "analytics cookies", "essential cookies", "consent management"],
     title: "Cookie Policy",
-    description: "How cookies are used to improve your experience.",
+    description: "Understand how SwyftUp uses cookies, what categories we rely on, and how you can manage preferences.",
+    sections: [
+      {
+        heading: "Cookie categories",
+        paragraphs: [
+          "We use essential cookies for security and functionality, analytics cookies to improve performance, and preference cookies to remember choices.",
+        ],
+      },
+      {
+        heading: "How to manage preferences",
+        paragraphs: [
+          "You can update consent settings at any time via the preferences control.",
+        ],
+        bullets: [
+          "Enable or disable analytics cookies",
+          "Review essential cookies required for service delivery",
+          "Withdraw consent where applicable",
+        ],
+      },
+      {
+        heading: "Placeholder notice",
+        paragraphs: [
+          "This is a placeholder summary. Replace with the full Cookie Policy and link it to a live preferences manager or modal for consent updates.",
+        ],
+      },
+    ],
     features: [
       { title: "Essential", description: "Site functionality and security." },
       { title: "Analytics", description: "Understand usage and improve performance." },
       { title: "Preferences", description: "Manage your cookie settings." },
     ],
-    body:
-      "Placeholder cookie policy. TODO: Add full cookie disclosure and implement a preferences modal or manager for consent updates.",
     cta: {
       headline: "Manage your preferences.",
       subhead: "Update your cookie settings anytime.",
@@ -632,16 +1210,42 @@ export const marketingPages: MarketingPageContent[] = [
   {
     slug: "dpa",
     seoTitle: "Data Processing Agreement | SwyftUp",
-    seoDescription: "Review how SwyftUp processes data on behalf of customers and safeguards information.",
+    seoDescription: "Review SwyftUp’s data processing roles, security measures, and subprocessors.",
+    primaryKeyword: "SwyftUp data processing agreement",
+    secondaryKeywords: ["DPA", "data processing roles", "subprocessors list", "security measures"],
     title: "Data Processing Agreement (DPA)",
-    description: "How SwyftUp processes data on behalf of customers.",
+    description: "Understand how SwyftUp processes data on behalf of customers, including roles, safeguards, and subprocessors.",
+    sections: [
+      {
+        heading: "Roles and definitions",
+        paragraphs: [
+          "Outlines controller vs processor responsibilities and how SwyftUp supports compliance obligations.",
+        ],
+      },
+      {
+        heading: "Security measures",
+        paragraphs: [
+          "Summarizes technical and organizational measures used to protect data during processing.",
+        ],
+      },
+      {
+        heading: "Subprocessors",
+        paragraphs: [
+          "Provides transparency into approved subprocessors and how changes are communicated.",
+        ],
+      },
+      {
+        heading: "Placeholder notice",
+        paragraphs: [
+          "This is a placeholder summary. Attach and link the signed DPA with the full subprocessors list and security controls.",
+        ],
+      },
+    ],
     features: [
       { title: "Roles & responsibilities", description: "Controller vs processor definitions." },
       { title: "Security measures", description: "How data is safeguarded." },
       { title: "Subprocessors", description: "Transparency into service providers." },
     ],
-    body:
-      "Placeholder DPA summary. TODO: Attach the signed Data Processing Agreement with subprocessors list and security measures.",
     cta: {
       headline: "Need the DPA for procurement?",
       subhead: "Contact us for the latest version.",
