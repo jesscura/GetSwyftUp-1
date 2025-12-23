@@ -213,9 +213,9 @@ const superAdminEmail = process.env.SUPER_ADMIN_EMAIL;
 const seedData: MockDatabase = {
   org: { id: "org_swyftup", name: orgName, currency: orgCurrency },
   users: [
-    ...(ownerEmail ? [{ id: "user_owner", name: "Workspace Owner", email: ownerEmail, role: "OWNER" }] : []),
+    ...(ownerEmail ? [{ id: "user_owner", name: "Workspace Owner", email: ownerEmail, role: "OWNER" as Role }] : []),
     ...(superAdminEmail
-      ? [{ id: "user_super_admin", name: "Super Admin", email: superAdminEmail, role: "SUPER_ADMIN" }]
+      ? [{ id: "user_super_admin", name: "Super Admin", email: superAdminEmail, role: "SUPER_ADMIN" as Role }]
       : []),
   ],
   contractors: [],
