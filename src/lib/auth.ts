@@ -3,10 +3,13 @@ import Credentials from "next-auth/providers/credentials";
 import type { JWT } from "next-auth/jwt";
 import { z } from "zod";
 import { Role } from "@/config/roles";
+import { requiresTwoFactor, verifySecondFactor } from "@/lib/twofactor";
 
 const credentialsSchema = z.object({
   email: z.string().email(),
   password: z.string().min(4),
+  otp: z.string().optional(),
+  recoveryCode: z.string().optional(),
 });
 
 export const authConfig = {
@@ -19,12 +22,13 @@ export const authConfig = {
       credentials: {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
+        otp: { label: "One-time code", type: "text" },
       },
       authorize: async (credentials) => {
         const parsed = credentialsSchema.safeParse(credentials);
         if (!parsed.success) return null;
 
-        const { email, password } = parsed.data;
+        const { email, password, otp, recoveryCode } = parsed.data;
         const authEmail = process.env.AUTH_EMAIL;
         const authPassword = process.env.AUTH_PASSWORD;
         const superAdminEmail = process.env.SUPER_ADMIN_EMAIL;
@@ -41,8 +45,18 @@ export const authConfig = {
         if (!matchesEnv && !matchesSuperAdmin) return null;
         const isSuperAdmin = matchesSuperAdmin;
         const role = isSuperAdmin ? Role.SUPER_ADMIN : Role.OWNER;
+        const userId = isSuperAdmin ? "user_super_admin" : "user_owner";
+
+        if (requiresTwoFactor(role)) {
+          const otpCandidate = otp ?? undefined;
+          const recoveryCandidate = recoveryCode ?? (otp && otp.length > 6 ? otp : undefined);
+          const verification = verifySecondFactor(userId, otpCandidate, recoveryCandidate);
+          if (!verification.ok) {
+            throw new Error("MFA_REQUIRED");
+          }
+        }
         return {
-          id: isSuperAdmin ? "user_super_admin" : "user_owner",
+          id: userId,
           name: isSuperAdmin ? "Super Admin" : "Workspace Owner",
           email,
           role,

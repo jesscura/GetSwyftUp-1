@@ -1,6 +1,15 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { wiseProvider } from "@/lib/wise-provider";
+import {
+  gateCardIssue,
+  gateInvoiceSubmission,
+  gateInviteContractor,
+  gatePayout,
+  getOnboardingState,
+  updateOnboardingState,
+} from "@/lib/onboarding-state";
+import { sendNotification } from "@/lib/notification-service";
 
 export type Role = "SUPER_ADMIN" | "OWNER" | "ADMIN" | "FINANCE" | "CONTRACTOR";
 export type ContractorStatus = "invited" | "onboarding" | "active";
@@ -301,6 +310,10 @@ export function resetDb() {
 
 export const inviteContractorAction = async (formData: FormData) => {
   "use server";
+  const gate = gateInviteContractor();
+  if (!gate.allowed) {
+    throw new Error(`Blocked: ${gate.blockers.join(", ")}`);
+  }
   const parsed = z
     .object({
       name: z.string().min(2),
@@ -336,6 +349,7 @@ export const inviteContractorAction = async (formData: FormData) => {
     balance: 0,
     pending: 0,
   });
+  updateOnboardingState({ firstContractorInvited: true });
   pushAudit("user_owner", "invite_contractor", { contractorId: contractor.id });
   revalidatePath("/app/contractors");
 };
@@ -358,6 +372,11 @@ export const createInvoiceAction = async (formData: FormData) => {
 
   if (!parsed.success) {
     throw new Error("Invalid invoice input");
+  }
+  const contractor = db.contractors.find((c) => c.id === parsed.data.contractorId);
+  const gate = gateInvoiceSubmission(contractor?.status);
+  if (!gate.allowed) {
+    throw new Error(`Blocked: ${gate.blockers.join(", ")}`);
   }
 
   const invoice: Invoice = {
@@ -388,6 +407,7 @@ export const approveInvoiceAction = async (invoiceId: string) => {
   invoice.status = "approved";
   invoice.timeline.push({ label: "Approved", at: new Date().toISOString() });
   pushAudit("user_owner", "approve_invoice", { invoiceId });
+  sendNotification({ userId: "user_owner", event: "invoice.approved", metadata: { invoiceId } });
   revalidatePath("/app/invoices");
   revalidatePath(`/app/invoices/${invoiceId}`);
 };
@@ -395,6 +415,7 @@ export const approveInvoiceAction = async (invoiceId: string) => {
 export const fundWalletAction = async (amount: number) => {
   "use server";
   addLedger("w_org", "CREDIT", amount, "funding", `fund_${randomShort(6)}`, "Mock funding");
+  updateOnboardingState({ fundingSourceConnected: true });
   pushAudit("user_owner", "fund_wallet", { amount });
   revalidatePath("/app/wallet");
   revalidatePath("/app");
@@ -413,6 +434,12 @@ export const createPayoutAction = async (formData: FormData) => {
     });
 
   if (!parsed.success) throw new Error("Invalid payout");
+  const fundingConnected = getOnboardingState().fundingSourceConnected;
+  const payoutMethod = db.payoutMethods.find((pm) => pm.contractorId === parsed.data.contractorId);
+  const gate = gatePayout(fundingConnected, Boolean(payoutMethod));
+  if (!gate.allowed) {
+    throw new Error(`Blocked: ${gate.blockers.join(", ")}`);
+  }
 
   const payout: Payout = {
     id: `pay_${randomShort(6)}`,
@@ -440,7 +467,9 @@ export const createPayoutAction = async (formData: FormData) => {
     attempts: 0,
     createdAt: new Date().toISOString(),
   });
+  updateOnboardingState({ firstPayoutSent: true });
   pushAudit("user_owner", "create_payout", { payoutId: payout.id });
+  sendNotification({ userId: "user_owner", event: "payout.scheduled", metadata: { payoutId: payout.id } });
   revalidatePath("/app/wallet");
   revalidatePath("/app");
 };
@@ -463,6 +492,7 @@ export const processJobsAction = async () => {
             providerRef,
           });
           pushAudit("user_owner", "mark_payout_paid", { payoutId: payout.id, provider: payout.provider });
+          sendNotification({ userId: "user_owner", event: "payout.completed", metadata: { payoutId: payout.id } });
         }
       }
 
@@ -477,6 +507,10 @@ export const issueCardAction = async (contractorId: string) => {
   "use server";
   const contractor = db.contractors.find((c) => c.id === contractorId);
   if (!contractor) throw new Error("Contractor not found");
+  const gate = gateCardIssue(contractor.status);
+  if (!gate.allowed) {
+    throw new Error(`Blocked: ${gate.blockers.join(", ")}`);
+  }
   const wallet = db.wallets.find((w) => w.ownerId === contractorId);
   if (!wallet || wallet.balance <= 0) throw new Error("Insufficient balance to issue card");
   const card: Card = {
@@ -499,6 +533,7 @@ export const toggleCardStatusAction = async (cardId: string, next: CardStatus) =
   if (!card) throw new Error("Card not found");
   card.status = next;
   pushAudit("user_owner", "update_card_status", { cardId, status: next });
+  sendNotification({ userId: "user_owner", event: "card.status_changed", metadata: { cardId, status: next } });
   revalidatePath("/app/cards");
 };
 
@@ -538,10 +573,11 @@ export const updateOrgProfileAction = async (formData: FormData) => {
       teamSize: formData.get("teamSize"),
       payoutVolume: formData.get("payoutVolume"),
       currency: formData.get("currency"),
-    });
+  });
   if (!parsed.success) throw new Error("Invalid org profile");
   db.org.name = parsed.data.name;
   db.org.currency = parsed.data.currency;
+  updateOnboardingState({ companyProfileComplete: true });
   upsertOnboardingStep("user_owner", "OWNER", "company_setup", parsed.data);
   pushAudit("user_owner", "update_org_profile", parsed.data);
   revalidatePath("/onboarding/company/setup");
