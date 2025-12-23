@@ -11,7 +11,7 @@ export default function ContractorKycPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-bg px-4">
-      <Card className="w.full max-w-3xl border-white/5 bg-[color-mix(in_srgb,var(--panel)_92%,transparent)]">
+      <Card className="w-full max-w-3xl border-white/5 bg-[color-mix(in_srgb,var(--panel)_92%,transparent)]">
         <CardHeader className="space-y-2">
           <p className="text-sm uppercase tracking-[0.2em] text-muted">Contractor onboarding</p>
           <h1 className="font-display text-3xl font-semibold">KYC Verification</h1>

@@ -105,7 +105,7 @@ export default function SecuritySettingsPage() {
                 <p className="text-sm">Recovery codes (store securely):</p>
                 <div className="grid grid-cols-2 gap-2">
                   {backupCodes.map((c) => (
-                    <div key={c} className="rounded bg.white/5 px-3 py-2 text-sm font-mono">{c}</div>
+                    <div key={c} className="rounded bg-white/5 px-3 py-2 text-sm font-mono">{c}</div>
                   ))}
                 </div>
               </div>

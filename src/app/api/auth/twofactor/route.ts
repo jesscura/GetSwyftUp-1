@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { generateTwoFactorSecret, storeEnrollment, getEnrollment } from "@/lib/twofactor";
+import { removeEnrollment } from "@/lib/twofactor";
 
 /**
  * GET /api/auth/twofactor
@@ -98,5 +99,22 @@ export async function POST(request: NextRequest) {
       { error: "Failed to confirm enrollment" },
       { status: 500 }
     );
+  }
+}
+
+/**
+ * DELETE /api/auth/twofactor
+ * Disable 2FA by removing enrollment
+ */
+export async function DELETE() {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  try {
+    removeEnrollment(session.user.id);
+    return NextResponse.json({ success: true });
+  } catch (e) {
+    return NextResponse.json({ error: "Unable to disable" }, { status: 400 });
   }
 }
