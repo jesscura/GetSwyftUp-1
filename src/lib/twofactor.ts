@@ -48,6 +48,10 @@ export function getEnrollment(userId: string): TwoFactorEnrollment | undefined {
   return enrollments.get(userId);
 }
 
+export function removeEnrollment(userId: string): void {
+  enrollments.delete(userId);
+}
+
 /**
  * Verify a TOTP code
  */

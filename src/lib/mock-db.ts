@@ -697,6 +697,17 @@ export const contractorCardDecisionAction = async (formData: FormData) => {
   revalidatePath("/app/cards");
 };
 
+export const updateKycStatusAction = async (contractorId: string, status: "approved" | "rejected" | "pending") => {
+  "use server";
+  const contractor = db.contractors.find((c) => c.id === contractorId);
+  if (!contractor) throw new Error("Contractor not found");
+  contractor.documents.kyc = status;
+  contractor.status = status === "approved" ? "active" : contractor.status;
+  pushAudit("user_owner", "kyc_status_updated", { contractorId, status });
+  revalidatePath(`/app/contractors/${contractorId}`);
+  revalidatePath("/onboarding/contractor/card");
+};
+
 export const previewWiseQuoteAction = async (formData: FormData) => {
   "use server";
   const parsed = z
