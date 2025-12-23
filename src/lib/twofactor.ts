@@ -1,9 +1,7 @@
-"use server";
-
-import { z } from "zod";
+import { Role } from "@/config/roles";
 
 export type TwoFactorEnrollment = {
-  secret: string;
+  secret: string; // Base32-encoded
   backupCodes: string[];
   enrolledAt: string;
 };
@@ -11,22 +9,60 @@ export type TwoFactorEnrollment = {
 // In-memory storage (replace with database in production)
 const enrollments = new Map<string, TwoFactorEnrollment>();
 
-/**
- * Generate a TOTP secret for two-factor authentication
- * Uses the Node.js crypto module which must be server-side only
- */
-export async function generateTwoFactorSecret(): Promise<TwoFactorEnrollment> {
-  // Use dynamic import to ensure this only runs server-side
-  const { createHmac, randomBytes } = await import("crypto");
-  
-  // Generate a random secret
-  const secret = randomBytes(20).toString("base64");
-  
-  // Generate backup codes
-  const backupCodes = Array.from({ length: 10 }, () =>
-    randomBytes(6).toString("hex")
-  );
+// Base32 (RFC4648) helpers
+const B32_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+function toBase32(bytes: Uint8Array): string {
+  let bits = 0;
+  let value = 0;
+  let output = "";
+  for (let i = 0; i < bytes.length; i++) {
+    value = (value << 8) | bytes[i];
+    bits += 8;
+    while (bits >= 5) {
+      output += B32_ALPHABET[(value >>> (bits - 5)) & 31];
+      bits -= 5;
+    }
+  }
+  if (bits > 0) {
+    output += B32_ALPHABET[(value << (5 - bits)) & 31];
+  }
+  return output;
+}
+function fromBase32(str: string): Uint8Array {
+  const clean = str.toUpperCase().replace(/=+$/g, "");
+  let bits = 0;
+  let value = 0;
+  const out: number[] = [];
+  for (let i = 0; i < clean.length; i++) {
+    const idx = B32_ALPHABET.indexOf(clean[i]);
+    if (idx === -1) continue;
+    value = (value << 5) | idx;
+    bits += 5;
+    if (bits >= 8) {
+      out.push((value >>> (bits - 8)) & 0xff);
+      bits -= 8;
+    }
+  }
+  return new Uint8Array(out);
+}
 
+function randomBytes(length: number): Uint8Array {
+  const arr = new Uint8Array(length);
+  crypto.getRandomValues(arr);
+  return arr;
+}
+
+function randomHex(length: number): string {
+  const bytes = randomBytes(length);
+  return Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+export async function generateTwoFactorSecret(): Promise<TwoFactorEnrollment> {
+  const secretBytes = randomBytes(20);
+  const secret = toBase32(secretBytes);
+  const backupCodes = Array.from({ length: 10 }, () => randomHex(6));
   return {
     secret,
     backupCodes,
@@ -34,16 +70,10 @@ export async function generateTwoFactorSecret(): Promise<TwoFactorEnrollment> {
   };
 }
 
-/**
- * Store enrollment for a user
- */
 export function storeEnrollment(userId: string, enrollment: TwoFactorEnrollment): void {
   enrollments.set(userId, enrollment);
 }
 
-/**
- * Get enrollment for a user
- */
 export function getEnrollment(userId: string): TwoFactorEnrollment | undefined {
   return enrollments.get(userId);
 }
@@ -52,51 +82,67 @@ export function removeEnrollment(userId: string): void {
   enrollments.delete(userId);
 }
 
-/**
- * Verify a TOTP code
- */
-export async function verifyTOTPCode(
-  secret: string,
-  code: string
-): Promise<boolean> {
-  const { createHmac } = await import("crypto");
-  
-  // Convert base64 secret to buffer
-  const secretBuffer = Buffer.from(secret, "base64");
-  
-  // TOTP window: current time and ±1 time period (30 seconds each)
-  const timeStep = 30000; // 30 seconds
-  const now = Date.now();
-  
-  for (let i = -1; i <= 1; i++) {
-    const time = Math.floor((now + i * timeStep) / timeStep);
-    const timeBuffer = Buffer.alloc(8);
-    
-    // Write time as big-endian 64-bit integer
-    for (let j = 0; j < 8; j++) {
-      timeBuffer[7 - j] = time & 0xff;
-      time = time >> 8;
-    }
-    
-    // Generate HMAC-SHA1
-    const hmac = createHmac("sha1", secretBuffer);
-    hmac.update(timeBuffer);
-    const digest = hmac.digest();
-    
-    // Extract dynamic binary code
-    const offset = digest[digest.length - 1] & 0x0f;
-    const bin_code = ((digest[offset] & 0x7f) << 24)
-      | ((digest[offset + 1] & 0xff) << 16)
-      | ((digest[offset + 2] & 0xff) << 8)
-      | (digest[offset + 3] & 0xff);
-    
-    // Generate 6-digit code
-    const otp = (bin_code % 1000000).toString().padStart(6, "0");
-    
-    if (otp === code) {
-      return true;
+async function hmacSha1(keyBytes: Uint8Array, data: Uint8Array): Promise<Uint8Array> {
+  const key = await crypto.subtle.importKey("raw", keyBytes, { name: "HMAC", hash: "SHA-1" }, false, ["sign"]);
+  const sig = await crypto.subtle.sign("HMAC", key, data);
+  return new Uint8Array(sig);
+}
+
+function counterToBuffer(counter: number): Uint8Array {
+  const buf = new Uint8Array(8);
+  for (let i = 7; i >= 0; i--) {
+    buf[i] = counter & 0xff;
+    counter = Math.floor(counter / 256);
+  }
+  return buf;
+}
+
+async function hotp(secretKey: Uint8Array, counter: number): Promise<string> {
+  const msg = counterToBuffer(counter);
+  const hmac = await hmacSha1(secretKey, msg);
+  const offset = hmac[hmac.length - 1] & 0x0f;
+  const code = ((hmac[offset] & 0x7f) << 24) |
+    ((hmac[offset + 1] & 0xff) << 16) |
+    ((hmac[offset + 2] & 0xff) << 8) |
+    (hmac[offset + 3] & 0xff);
+  return (code % 1_000_000).toString().padStart(6, "0");
+}
+
+export async function verifyTOTPCode(secretBase32: string, code: string): Promise<boolean> {
+  const keyBytes = fromBase32(secretBase32);
+  const step = 30;
+  const now = Math.floor(Date.now() / 1000);
+  const counter = Math.floor(now / step);
+  const candidates = await Promise.all([
+    hotp(keyBytes, counter - 1),
+    hotp(keyBytes, counter),
+    hotp(keyBytes, counter + 1),
+  ]);
+  return candidates.includes(code);
+}
+
+export function requiresTwoFactor(role: Role): boolean {
+  // Require 2FA for privileged roles
+  return role === Role.OWNER || role === Role.SUPER_ADMIN;
+}
+
+export async function verifySecondFactor(
+  userId: string,
+  code?: string,
+  recoveryCode?: string,
+): Promise<{ ok: boolean; usedRecovery: boolean }> {
+  const enrollment = getEnrollment(userId);
+  if (!enrollment) return { ok: true, usedRecovery: false };
+  if (code) {
+    const valid = await verifyTOTPCode(enrollment.secret, code);
+    if (valid) return { ok: true, usedRecovery: false };
+  }
+  if (recoveryCode) {
+    const idx = enrollment.backupCodes.indexOf(recoveryCode);
+    if (idx >= 0) {
+      enrollment.backupCodes.splice(idx, 1);
+      return { ok: true, usedRecovery: true };
     }
   }
-  
-  return false;
+  return { ok: false, usedRecovery: false };
 }

@@ -50,7 +50,7 @@ export const authConfig = {
         if (requiresTwoFactor(role)) {
           const otpCandidate = otp ?? undefined;
           const recoveryCandidate = recoveryCode ?? (otp && otp.length > 6 ? otp : undefined);
-          const verification = verifySecondFactor(userId, otpCandidate, recoveryCandidate);
+          const verification = await verifySecondFactor(userId, otpCandidate, recoveryCandidate);
           if (!verification.ok) {
             throw new Error("MFA_REQUIRED");
           }

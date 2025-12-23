@@ -1,4 +1,4 @@
-"use server";
+// Helper used in API routes and server handlers
 
 const seen = new Set<string>();
 
