@@ -35,7 +35,7 @@ Visit `http://localhost:3000`.
 
 ### Integration toggles
 - `WISE_API_KEY` marks payments + withdrawals (Wise sandbox) as ready in the dashboard and powers FX quote previews.
-- `CARD_ISSUER_API_KEY` marks the virtual card rail as configured; cards stay in mock mode until an issuer key is present.
+- `MARQETA_API_KEY` marks the virtual card rail as configured; cards stay in mock mode until an issuer key is present. (Falls back to `CARD_ISSUER_API_KEY` for legacy envs.)
 
 ### Mock data, jobs, and seeding
 - UI data is served from an in-memory mock store that mirrors the Prisma schema and starts empty.

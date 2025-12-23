@@ -5,7 +5,9 @@ import { Button } from "@/components/ui/button";
 
 export default function IntegrationsPage() {
   const wiseConfigured = Boolean(process.env.WISE_API_KEY?.trim());
-  const issuerConfigured = Boolean(process.env.CARD_ISSUER_API_KEY?.trim());
+  const marqetaConfigured = Boolean(
+    process.env.MARQETA_API_KEY?.trim() || process.env.CARD_ISSUER_API_KEY?.trim(),
+  );
   const integrations = [
     {
       title: "Payments & FX quotes",
@@ -31,14 +33,14 @@ export default function IntegrationsPage() {
     },
     {
       title: "Card issuance",
-      provider: "Virtual issuer sandbox",
-      status: issuerConfigured
+      provider: "Marqeta sandbox",
+      status: marqetaConfigured
         ? { label: "Ready", tone: "success" as const }
-        : { label: "Add CARD_ISSUER_API_KEY", tone: "warning" as const },
-      description: "Virtual cards are issued from the mock issuer; swap keys to talk to your provider.",
+        : { label: "Add MARQETA_API_KEY", tone: "warning" as const },
+      description: "Virtual cards are issued from the Marqeta sandbox; swap keys to talk to your provider.",
       actionLabel: "Manage cards",
       href: "/dashboard/cards",
-      meta: issuerConfigured ? "Issuer sandbox key detected." : "Cards run in mock mode until issuer keys are set.",
+      meta: marqetaConfigured ? "Marqeta sandbox key detected." : "Cards run in mock mode until issuer keys are set.",
     },
   ] as const;
 
@@ -49,16 +51,16 @@ export default function IntegrationsPage() {
           <p className="text-sm uppercase tracking-[0.15em] text-muted">Ecosystem</p>
           <h1 className="font-display text-2xl font-semibold">Integrations</h1>
           <p className="text-sm text-muted">
-            Super Admin can manage provider keys via environment variables. Wise powers payouts + withdrawals; card
-            issuance keys control the virtual card rail.
+            Super Admin can manage provider keys via environment variables. Wise powers payouts + withdrawals; Marqeta
+            keys control the virtual card rail.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Badge tone={wiseConfigured ? "success" : "warning"}>
             {wiseConfigured ? "Wise sandbox detected" : "Wise key missing"}
           </Badge>
-          <Badge tone={issuerConfigured ? "success" : "warning"}>
-            {issuerConfigured ? "Issuer ready" : "Issuer key missing"}
+          <Badge tone={marqetaConfigured ? "success" : "warning"}>
+            {marqetaConfigured ? "Marqeta ready" : "Marqeta key missing"}
           </Badge>
         </div>
       </div>
