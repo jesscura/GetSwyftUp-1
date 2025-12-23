@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { StatusBadge } from "@/components/status-badge";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -9,6 +9,7 @@ import { Input, Select } from "@/components/ui/input";
 import { getPayouts, getContractors, getContractorForUser } from "@/data/dashboard";
 import { useIdentity } from "@/components/dashboard/role-provider";
 import { Role } from "@/config/roles";
+import { FlowState } from "@/components/dashboard/flow-state";
 
 const payouts = getPayouts();
 const contractorMap = Object.fromEntries(getContractors().map((c) => [c.id, c.name]));
@@ -19,6 +20,25 @@ export default function PayoutsPage() {
   const contractor = getContractorForUser(identity.userId);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
+  const [blockers, setBlockers] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (role === Role.CONTRACTOR) return;
+    const load = async () => {
+      try {
+        const res = await fetch("/api/onboarding/state");
+        if (!res.ok) return;
+        const state = await res.json();
+        const next: string[] = [];
+        if (!state?.fundingSourceConnected) next.push("Connect a funding source before scheduling payouts");
+        if (!state?.firstContractorInvited) next.push("Invite a contractor and add their payout method");
+        setBlockers(next);
+      } catch {
+        setBlockers([]);
+      }
+    };
+    load();
+  }, [role]);
 
   const filtered = useMemo(() => {
     const contractorId = contractor?.id;
@@ -56,6 +76,14 @@ export default function PayoutsPage() {
           </div>
         )}
       </div>
+      {role !== Role.CONTRACTOR && blockers.length > 0 && (
+        <FlowState
+          title="Payouts are blocked"
+          description="Resolve the prerequisites before creating or releasing payouts."
+          blockers={blockers}
+          ctaHref="/dashboard/settings?tab=funding"
+        />
+      )}
 
       <Card className="bg-panel/80">
         <CardHeader className="flex flex-col gap-4 border-b border-white/5 sm:flex-row sm:items-center sm:justify-between">

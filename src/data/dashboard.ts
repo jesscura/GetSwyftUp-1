@@ -1,4 +1,5 @@
 import { Role } from "@/config/roles";
+import { markChecklistKey } from "@/lib/onboarding-state";
 
 export type ContractorStatus = "Pending" | "Active" | "Blocked";
 export type InvoiceStatus = "Draft" | "Submitted" | "Pending Approval" | "Approved" | "Rejected" | "Paid";
@@ -271,6 +272,7 @@ export function completeChecklistItem(userId: string, key: ChecklistKey) {
   const set = checklistStore.get(userId) ?? new Set<string>();
   set.add(key);
   checklistStore.set(userId, set);
+  markChecklistKey(key);
   return getChecklist(userId);
 }
 

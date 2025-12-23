@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [otp, setOtp] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -19,10 +20,11 @@ export default function SignInPage() {
       redirect: false,
       email,
       password,
+      otp,
       callbackUrl: "/dashboard",
     });
     if (res?.error) {
-      setError("Invalid credentials");
+      setError(res.error === "MFA_REQUIRED" ? "A valid 2FA code is required to continue." : "Invalid credentials");
     } else {
       window.location.href = "/dashboard";
     }
@@ -49,6 +51,16 @@ export default function SignInPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 required
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm text-muted">One-time code (if required)</label>
+              <Input
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                type="text"
+                inputMode="numeric"
+                placeholder="123456 or recovery code"
               />
             </div>
             {error && <p className="text-sm text-[var(--brand-2)]">{error}</p>}
