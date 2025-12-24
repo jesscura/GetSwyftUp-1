@@ -54,6 +54,13 @@ Run migrations against a real database when ready:
 npx prisma migrate dev --name init
 ```
 
+## Documentation
+- [Product requirements (PRD)](docs/PRD.md)
+- [Feature checklist and cleanup tasks](docs/FEATURE_CHECKLIST.md)
+- [Architecture notes](docs/ARCHITECTURE_IMPLEMENTATION.md)
+- [Security posture](docs/SECURITY.md)
+- [User journeys](docs/USER_JOURNEYS.md)
+
 ## Deploy on Railway
 The included `railway.toml` is configured for Nixpacks with a health check at `/api/health`.
 1. Install the [Railway CLI](https://docs.railway.app/reference/cli) and log in.
