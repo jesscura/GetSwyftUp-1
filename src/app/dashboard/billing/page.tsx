@@ -1,13 +1,28 @@
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-const paymentMethods = [
-  { type: "Corporate card", last4: "1024", status: "Active" },
-  { type: "Treasury account", last4: "8841", status: "On file" },
-];
-
 export default function BillingPage() {
+  const wiseConfigured = Boolean(process.env.WISE_API_KEY?.trim());
+  const marqetaConfigured = Boolean(
+    process.env.MARQETA_API_KEY?.trim() || process.env.CARD_ISSUER_API_KEY?.trim(),
+  );
+  const paymentMethods = [
+    {
+      type: "Wise sandbox payout balance",
+      last4: wiseConfigured ? "WISE" : "Missing",
+      status: wiseConfigured ? "Ready" : "Add sandbox key",
+    },
+    {
+      type: "Marqeta virtual card",
+      last4: marqetaConfigured ? "MRQT" : "Sandbox",
+      status: marqetaConfigured ? "Active" : "Configure issuer",
+    },
+    { type: "Corporate card", last4: "1024", status: "Active" },
+    { type: "Treasury account", last4: "8841", status: "On file" },
+  ];
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -50,9 +65,22 @@ export default function BillingPage() {
             <p className="text-sm text-muted">Payment methods</p>
             <p className="text-xs text-muted">Prioritize at least two methods for continuity</p>
           </div>
-          <Button variant="secondary">Add method</Button>
+          <Button asChild variant="secondary">
+            <Link href="/dashboard/integrations">Add method</Link>
+          </Button>
         </CardHeader>
         <CardContent className="grid gap-3">
+          <div className="flex flex-wrap items-center gap-2 rounded-[var(--radius-card)] border border-white/5 bg-white/5 p-4">
+            <Badge tone={wiseConfigured ? "success" : "warning"}>
+              {wiseConfigured ? "Wise sandbox ready" : "Wise key missing"}
+            </Badge>
+            <Badge tone={marqetaConfigured ? "success" : "warning"}>
+              {marqetaConfigured ? "Marqeta sandbox ready" : "Marqeta key missing"}
+            </Badge>
+            <p className="text-xs text-muted">
+              Invoice payouts route through Wise; card payments ride the Marqeta sandbox rail.
+            </p>
+          </div>
           {paymentMethods.map((method) => (
             <div
               key={method.last4}
