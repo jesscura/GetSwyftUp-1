@@ -222,6 +222,9 @@ const orgName = process.env.ORG_NAME ?? "SwyftUp";
 const orgCurrency = process.env.ORG_CURRENCY ?? "USD";
 const ownerEmail = process.env.AUTH_EMAIL ?? "owner@example.com";
 const superAdminEmail = process.env.SUPER_ADMIN_EMAIL;
+const FX_CROSS_RATE = 0.98;
+const FX_FEE_BPS = 0.005;
+const FX_FEE_MIN = 1;
 
 const seedData: MockDatabase = {
   org: { id: "org_swyftup", name: orgName, currency: orgCurrency },
@@ -302,6 +305,15 @@ function addLedger(
     const balanceCents = Math.round(wallet.balance * 100) + (type === "CREDIT" ? cents : -cents);
     wallet.balance = balanceCents / 100;
   }
+}
+
+function resolveContractStatus(
+  currentStatus: ContractorStatus,
+  contractActive: boolean,
+  kycStatus: string,
+): ContractorStatus {
+  if (kycStatus !== "approved") return currentStatus;
+  return contractActive ? "active" : "inactive";
 }
 
 export function getDb(): MockDatabase {
@@ -422,14 +434,14 @@ export const payInvoiceAction = async (invoiceId: string) => {
   "use server";
   const invoice = db.invoices.find((i) => i.id === invoiceId);
   if (!invoice) throw new Error("Invoice not found");
-  if (invoice.status === "paid") return;
+  if (invoice.status === "paid") return { status: "already_paid", invoiceId };
 
   invoice.status = "paid";
   invoice.timeline.push({ label: "Paid", at: new Date().toISOString() });
 
   const orgWallet = db.wallets.find((w) => w.ownerType === "ORG");
   const contractorWallet = db.wallets.find((w) => w.ownerId === invoice.contractorId);
-  const providerRef = `pay_${randomShort(6)}`;
+  const providerRef = orgWallet && contractorWallet ? `pay_${randomShort(6)}` : undefined;
   const memo = "Invoice paid";
 
   if (orgWallet) {
@@ -447,28 +459,39 @@ export const payInvoiceAction = async (invoiceId: string) => {
     );
   }
 
-  db.payouts.unshift({
-    id: providerRef,
-    orgId: db.org.id,
-    contractorId: invoice.contractorId,
-    invoiceId: invoice.id,
-    amount: invoice.amount,
-    sourceCurrency: orgWallet?.currency ?? "USD",
-    destinationCurrency: contractorWallet?.currency ?? "USD",
-    fxRate: 1,
-    fxFee: 0,
-    provider: "WISE",
-    status: "paid",
-    providerRef,
-    estimatedArrival: new Date().toISOString(),
-    createdAt: new Date().toISOString(),
-  });
+  if (orgWallet && contractorWallet && providerRef) {
+    const sameCurrency = orgWallet.currency === contractorWallet.currency;
+    const fxRate = sameCurrency ? 1 : FX_CROSS_RATE;
+    const fxFee = sameCurrency ? 0 : Math.max(FX_FEE_MIN, invoice.amount * FX_FEE_BPS);
 
-  pushAudit("user_owner", "pay_invoice", { invoiceId: invoice.id, contractorId: invoice.contractorId });
-  sendNotification({
-    userId: "user_owner",
-    event: "payout.completed",
-    metadata: { invoiceId: invoice.id, payoutId: providerRef },
+    db.payouts.unshift({
+      id: providerRef,
+      orgId: db.org.id,
+      contractorId: invoice.contractorId,
+      invoiceId: invoice.id,
+      amount: invoice.amount,
+      sourceCurrency: orgWallet.currency,
+      destinationCurrency: contractorWallet.currency,
+      fxRate,
+      fxFee,
+      provider: "WISE",
+      status: "paid",
+      providerRef,
+      estimatedArrival: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+    });
+
+    sendNotification({
+      userId: "user_owner",
+      event: "payout.completed",
+      metadata: { invoiceId: invoice.id, payoutId: providerRef },
+    });
+  }
+
+  pushAudit("user_owner", "pay_invoice", {
+    invoiceId: invoice.id,
+    contractorId: invoice.contractorId,
+    payoutRecorded: Boolean(providerRef),
   });
   revalidatePath("/app/invoices");
   revalidatePath(`/app/invoices/${invoiceId}`);
@@ -766,7 +789,7 @@ export const updateKycStatusAction = async (contractorId: string, status: "appro
   const contractor = db.contractors.find((c) => c.id === contractorId);
   if (!contractor) throw new Error("Contractor not found");
   contractor.documents.kyc = status;
-  contractor.status = status === "approved" ? (contractor.contractActive ? "active" : "inactive") : contractor.status;
+  contractor.status = resolveContractStatus(contractor.status, contractor.contractActive, status);
   pushAudit("user_owner", "kyc_status_updated", { contractorId, status });
   revalidatePath(`/app/contractors/${contractorId}`);
   revalidatePath("/onboarding/contractor/card");
@@ -784,7 +807,7 @@ export const updateContractorContractAction = async (formData: FormData) => {
       contractActive: z.coerce.boolean(),
       hourlyRate: optionalMoney,
       wage: optionalMoney,
-      wageCurrency: z.string().min(3).optional(),
+      wageCurrency: z.enum(["USD", "EUR", "GBP"]).optional(),
     })
     .safeParse({
       contractorId: formData.get("contractorId"),
@@ -800,7 +823,7 @@ export const updateContractorContractAction = async (formData: FormData) => {
   if (!contractor) throw new Error("Contractor not found");
 
   contractor.contractActive = parsed.data.contractActive;
-  contractor.status = parsed.data.contractActive ? "active" : "inactive";
+  contractor.status = resolveContractStatus(contractor.status, parsed.data.contractActive, contractor.documents.kyc);
   if (parsed.data.hourlyRate !== undefined) contractor.hourlyRate = parsed.data.hourlyRate;
   if (parsed.data.wage !== undefined) contractor.wage = parsed.data.wage;
   if (parsed.data.wageCurrency) contractor.wageCurrency = parsed.data.wageCurrency;

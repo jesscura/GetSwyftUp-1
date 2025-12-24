@@ -14,6 +14,7 @@ export default function ContractorDetailPage({ params }: { params: { id: string 
   if (!contractor) return notFound();
   const wallet = db.wallets.find((w) => w.id === contractor.walletId);
   const invoices = db.invoices.filter((inv) => inv.contractorId === contractor.id);
+  const defaultCurrency = contractor.wageCurrency ?? db.org.currency ?? "USD";
 
   return (
     <div className="space-y-4">
@@ -59,11 +60,11 @@ export default function ContractorDetailPage({ params }: { params: { id: string 
               <p>Contract: {contractor.contractActive ? "Active" : "Inactive"}</p>
               {contractor.hourlyRate !== undefined && (
                 <p>
-                  Hourly rate: {formatCurrency(contractor.hourlyRate, contractor.wageCurrency ?? "USD")} / hr
+                  Hourly rate: {formatCurrency(contractor.hourlyRate, defaultCurrency)} / hr
                 </p>
               )}
               {contractor.wage !== undefined && (
-                <p>Pay wage: {formatCurrency(contractor.wage, contractor.wageCurrency ?? "USD")}</p>
+                <p>Pay wage: {formatCurrency(contractor.wage, defaultCurrency)}</p>
               )}
             </div>
 
@@ -73,7 +74,7 @@ export default function ContractorDetailPage({ params }: { params: { id: string 
                 <option value="true">Active</option>
                 <option value="false">Inactive</option>
               </Select>
-              <Select name="wageCurrency" defaultValue={contractor.wageCurrency ?? "USD"}>
+              <Select name="wageCurrency" defaultValue={defaultCurrency}>
                 <option value="USD">USD</option>
                 <option value="EUR">EUR</option>
                 <option value="GBP">GBP</option>
