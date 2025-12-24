@@ -13,7 +13,7 @@
 - Payments: invoices, fund wallet, release payouts (Wise mock/real toggle)
 - Admin: KYC queue, audit log viewer, jobs monitor, disputes/holds rudiments
 
-## Phase 2
+## Phase 2 — Implement all of the following
 - Email verification flow, PDF receipts, FX conversion, card limits UI
 - Provider adapters (KYC, Payment, Card) and notification preferences
 - Webhook idempotency/event store
