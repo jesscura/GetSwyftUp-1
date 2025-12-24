@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { StatusBadge } from "@/components/status-badge";
 
-export default function DashboardPage() {
-  const db = getDb();
+export default async function DashboardPage() {
+  const db = await getDb();
   const orgWallet = db.wallets.find((w) => w.ownerType === "ORG");
   const totalBalance = orgWallet?.balance ?? 0;
   const available = totalBalance - (orgWallet?.pending ?? 0);

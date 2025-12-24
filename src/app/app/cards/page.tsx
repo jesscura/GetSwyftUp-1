@@ -6,8 +6,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Select } from "@/components/ui/input";
 import { StatusBadge } from "@/components/status-badge";
 
-export default function CardsPage() {
-  const db = getDb();
+export default async function CardsPage() {
+  const db = await getDb();
 
   return (
     <div className="space-y-4">

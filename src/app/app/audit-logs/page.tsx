@@ -2,8 +2,8 @@ import { getDb } from "@/lib/data-service";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-export default function AuditLogsPage() {
-  const db = getDb();
+export default async function AuditLogsPage() {
+  const db = await getDb();
 
   return (
     <div className="space-y-4">

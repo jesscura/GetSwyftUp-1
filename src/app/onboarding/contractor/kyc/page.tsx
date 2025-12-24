@@ -5,8 +5,8 @@ import { getDb, updateKycStatusAction } from "@/lib/data-service";
 
 export const metadata = { title: "Contractor KYC | SwyftUp" };
 
-export default function ContractorKycPage() {
-  const db = getDb();
+export default async function ContractorKycPage() {
+  const db = await getDb();
   const contractor = db.contractors.find((c) => c.status !== "active") ?? db.contractors[0];
 
   return (

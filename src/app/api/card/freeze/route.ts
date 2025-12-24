@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   if (!cardId) return NextResponse.json({ error: "Missing cardId" }, { status: 400 });
   try {
     await toggleCardStatusAction(cardId, "frozen");
-    const db = getDb();
+    const db = await getDb();
     const card = db.cards.find((c) => c.id === cardId);
     return NextResponse.json({ card });
   } catch (e) {

@@ -7,8 +7,8 @@ import { Input, Select } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { StatusBadge } from "@/components/status-badge";
 
-export default function ContractorsPage({ searchParams }: { searchParams: Record<string, string | string[] | undefined> }) {
-  const db = getDb();
+export default async function ContractorsPage({ searchParams }: { searchParams: Record<string, string | string[] | undefined> }) {
+  const db = await getDb();
   const term = typeof searchParams.q === "string" ? searchParams.q.toLowerCase() : "";
   const status = typeof searchParams.status === "string" ? searchParams.status : "all";
 

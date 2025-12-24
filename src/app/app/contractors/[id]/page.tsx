@@ -8,8 +8,8 @@ import { Input, Select } from "@/components/ui/input";
 import { StatusBadge } from "@/components/status-badge";
 import { getDb, updateContractorContractAction } from "@/lib/data-service";
 
-export default function ContractorDetailPage({ params }: { params: { id: string } }) {
-  const db = getDb();
+export default async function ContractorDetailPage({ params }: { params: { id: string } }) {
+  const db = await getDb();
   const contractor = db.contractors.find((c) => c.id === params.id);
   if (!contractor) return notFound();
   const wallet = db.wallets.find((w) => w.id === contractor.walletId);

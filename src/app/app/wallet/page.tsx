@@ -7,8 +7,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input, Select } from "@/components/ui/input";
 import { StatusBadge } from "@/components/status-badge";
 
-export default function WalletPage() {
-  const db = getDb();
+export default async function WalletPage() {
+  const db = await getDb();
   const orgWallet = db.wallets.find((w) => w.ownerType === "ORG");
 
   return (

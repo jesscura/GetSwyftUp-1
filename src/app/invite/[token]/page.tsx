@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-export default function InvitePage({ params }: { params: { token: string } }) {
-  const db = getDb();
+export default async function InvitePage({ params }: { params: { token: string } }) {
+  const db = await getDb();
   const invite = db.invites.find((i) => i.token === params.token);
   const company = invite ? db.org.name : "SwyftUp";
 

@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { StatusBadge } from "@/components/status-badge";
 
-export default function InvoiceDetailPage({ params }: { params: { id: string } }) {
-  const db = getDb();
+export default async function InvoiceDetailPage({ params }: { params: { id: string } }) {
+  const db = await getDb();
   const invoice = db.invoices.find((i) => i.id === params.id);
   if (!invoice) return notFound();
   const contractor = db.contractors.find((c) => c.id === invoice.contractorId);

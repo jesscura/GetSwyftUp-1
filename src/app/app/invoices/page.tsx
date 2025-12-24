@@ -7,8 +7,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input, Select, Textarea } from "@/components/ui/input";
 import { StatusBadge } from "@/components/status-badge";
 
-export default function InvoicesPage() {
-  const db = getDb();
+export default async function InvoicesPage() {
+  const db = await getDb();
 
   return (
     <div className="space-y-4">

@@ -2,8 +2,8 @@ import { contractorCardDecisionAction, getDb } from "@/lib/data-service";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export default function ContractorCardPage() {
-  const db = getDb();
+export default async function ContractorCardPage() {
+  const db = await getDb();
   const contractor = db.contractors.find((c) => c.status !== "active") ?? db.contractors[0];
   return (
     <div className="flex min-h-screen items-center justify-center bg-bg px-4">

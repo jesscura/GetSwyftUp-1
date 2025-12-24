@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/input";
 import { StatusBadge } from "@/components/status-badge";
 
-export default function SupportPage({ searchParams }: { searchParams: Record<string, string | string[] | undefined> }) {
-  const db = getDb();
+export default async function SupportPage({ searchParams }: { searchParams: Record<string, string | string[] | undefined> }) {
+  const db = await getDb();
   const activeId = typeof searchParams.ticket === "string" ? searchParams.ticket : db.tickets[0]?.id;
   const ticket = db.tickets.find((t) => t.id === activeId) ?? db.tickets[0];
 

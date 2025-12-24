@@ -3,8 +3,8 @@ import { getDb } from "@/lib/data-service";
 
 export const metadata = { title: "Admin Console | SwyftUp" };
 
-export default function AdminConsolePage() {
-  const db = getDb();
+export default async function AdminConsolePage() {
+  const db = await getDb();
   const kycQueue = db.contractors.filter((c) => c.documents.kyc === "pending");
   const disputes = [] as Array<{ id: string; reason: string }>;
 

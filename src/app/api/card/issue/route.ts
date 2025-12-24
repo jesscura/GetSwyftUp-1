@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   if (!contractorId) return NextResponse.json({ error: "Missing contractorId" }, { status: 400 });
   try {
     await issueCardAction(contractorId);
-    const db = getDb();
+    const db = await getDb();
     const card = db.cards.find((c) => c.contractorId === contractorId);
     return NextResponse.json({ card });
   } catch (e) {

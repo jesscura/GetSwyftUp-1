@@ -4,8 +4,8 @@ import { formatCurrency } from "@/lib/format";
 
 export const metadata = { title: "Wallet Transactions | SwyftUp" };
 
-export default function WalletTransactionsPage() {
-  const db = getDb();
+export default async function WalletTransactionsPage() {
+  const db = await getDb();
   const entries = db.ledger;
 
   return (

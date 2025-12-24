@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input, Select } from "@/components/ui/input";
 import { StatusBadge } from "@/components/status-badge";
 
-export default function WithdrawPage() {
-  const db = getDb();
+export default async function WithdrawPage() {
+  const db = await getDb();
   const contractorWallets = db.wallets.filter((w) => w.ownerType === "CONTRACTOR");
 
   return (

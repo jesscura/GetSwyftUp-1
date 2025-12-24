@@ -4,8 +4,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-export default function CompanySetupPage() {
-  const db = getDb();
+export default async function CompanySetupPage() {
+  const db = await getDb();
   const checklist = [
     { label: "Invite contractor", href: "/app/contractors" },
     { label: "Invite team member", href: "/app/settings" },

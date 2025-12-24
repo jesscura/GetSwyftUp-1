@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input, Select, Textarea } from "@/components/ui/input";
 
-export default function SettingsPage() {
-  const db = getDb();
+export default async function SettingsPage() {
+  const db = await getDb();
 
   return (
     <div className="space-y-4">

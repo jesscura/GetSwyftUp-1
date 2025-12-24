@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input, Select } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-export default function ContractorPayoutMethodPage() {
-  const db = getDb();
+export default async function ContractorPayoutMethodPage() {
+  const db = await getDb();
   const contractor = db.contractors.find((c) => c.status !== "active") ?? db.contractors[0];
 
   return (
