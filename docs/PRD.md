@@ -15,7 +15,8 @@
 
 ## Phase 2
 - Email verification flow, PDF receipts, FX conversion, card limits UI
-- Provider adapters (KYC, Payment, Card), notifications preferences, webhook idempotency store
+- Provider adapters (KYC, Payment, Card) and notification preferences
+- Webhook idempotency/event store
 - Projects + milestones linked to invoices/payments
 
 ## Phase 3

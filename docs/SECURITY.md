@@ -9,4 +9,4 @@
 - Secure cookies/sessions via NextAuth; enforce 2FA for privileged roles
 - CSRF protection for relevant forms (Phase 2)
 - Log redaction for sensitive fields; avoid secrets in audit/notification payloads
-- Background jobs and webhooks must be transaction-safe and idempotent
+- Background jobs and webhooks must be transaction-safe and idempotent (wrap ledger/hold/payout mutations in a single DB transaction)

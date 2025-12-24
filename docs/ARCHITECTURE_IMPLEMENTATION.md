@@ -1,7 +1,8 @@
 # Architecture Implementation Plan
 
 ## Current System Summary
-- **Framework & routing**: Next.js 16 App Router with marketing routes at `/`, `/about`, etc., and two dashboard shells: `/dashboard/*` (role-aware via `src/middleware.ts`) and `/app/*` (static sidebar defined in `src/app/app/layout.tsx`). Shared layout primitives live in `src/components/dashboard`.
+- **Framework**: Next.js 16 App Router with Tailwind v4 styling tokens in `src/app/globals.css`.
+- **Routing shells**: Marketing routes live at `/`, `/about`, etc. Two dashboard shells exist: `/dashboard/*` (role-aware via `src/middleware.ts`) and `/app/*` (static sidebar defined in `src/app/app/layout.tsx`). Shared layout primitives live in `src/components/dashboard`.
 - **Auth**: NextAuth credentials provider (`src/lib/auth.ts`) using env `AUTH_EMAIL`/`AUTH_PASSWORD` plus optional `SUPER_ADMIN_*`. Session strategy is JWT; session exposes `user.id` and `user.role`. Privileged roles (OWNER, SUPER_ADMIN) require 2FA through the in-memory TOTP helper in `src/lib/twofactor.ts`. Auth routes are under `/api/auth/[...nextauth]` with UI at `/auth/sign-in` & `/auth/sign-up`.
 - **RBAC & nav**: Roles and path guards defined in `src/config/roles.ts`; middleware normalizes `/dashboard/*` paths and redirects unauthorized users. `RoleProvider` in `src/components/dashboard/role-provider.tsx` supplies role context to dashboard pages.
 - **Data layer**: Prisma schema exists at `prisma/schema.prisma` (PostgreSQL) with models for users, organizations, memberships, invoices, wallets, ledger entries, payouts, cards, support tickets, jobs, etc. Runtime data is currently served from an in-memory mock store (`src/lib/mock-db.ts`) that mirrors the schema and powers server actions for invites, invoices, payouts, card issuance, onboarding steps, and ledger mutations.
@@ -12,9 +13,9 @@
 - **UI**: Dashboard pages under `src/app/dashboard` (role-aware) and `src/app/app` (single-tenant demo) render panels for contractors, invoices, payouts, cards, wallet, settings, audit logs, and support. Components and tokens live in `src/components` with Tailwind v4 styling in `src/app/globals.css`.
 
 ## Delta Plan (toward full SwyftUp architecture)
-1) **Navigation & RBAC**: Expand role-aware nav to the required Worker/Client/Admin IA and reconcile `/dashboard` vs `/app` shells; ensure middleware guards new paths.  
+1) **Navigation & RBAC**: Expand role-aware nav to the required Worker/Client/Admin Information Architecture and reconcile `/dashboard` vs `/app` shells; ensure middleware guards new paths.  
 2) **Module boundaries**: Introduce `/src/modules/*` per domain (auth, onboarding, orgs, contractors, projects, invoices, payments, wallet, cards, notifications, audit, support, admin, jobs, webhooks) with colocated types, services, DB access, API handlers, and UI.  
-3) **Database extensions**: Add models for Project/Task/Milestone, KYCVerification, WalletHold, Notification + EmailLog, Dispute, ProviderEventLog, TwoFactorSecret + RecoveryCodes plus required indexes (ledger idempotency, provider event uniqueness, card tx uniqueness, hold status index). Wire Prisma migrations + seeds consistent with existing schema.  
+3) **Database extensions**: Add models for Project/Task/Milestone, KYCVerification, WalletHold, Notification + EmailLog, Dispute, ProviderEventLog, TwoFactorSecret + RecoveryCodes. Add indexes/uniques for ledger idempotency, provider event uniqueness, card transaction uniqueness, and hold status lookups. Ship Prisma migrations + seeds consistent with the existing schema.  
 4) **Wallet service**: Implement a ledger-driven `WalletService` (compute balance/available, holds, settle/release, idempotent `postLedgerEntry`) and swap balance mutations to use it.  
 5) **Payments & payouts**: Implement invoice funding/release flows that credit wallets, queue payout settlement jobs, and honor Wise mock/real toggle with FX previews.  
 6) **Cards**: Add Marqeta adapter (mock-first) plus card↔wallet coupling: auth creates holds, settlement posts debits, reversals release/credit.  

@@ -1,7 +1,7 @@
 # User Journeys
 
 ## Worker
-1. Sign in → 2FA if enabled
+1. Sign in (workspace credentials) → 2FA if enabled
 2. Complete profile → submit KYC → pending → approved/rejected
 3. Wallet becomes eligible → optionally issue virtual card (mock or Marqeta)
 4. View Overview (balance + recent activity) and Projects/Tasks (Phase 2)
@@ -20,4 +20,4 @@
 1. Review KYC queue; approve/reject with reason
 2. Monitor transactions, holds, payouts, cards, disputes
 3. Inspect audit logs and support tickets
-4. Watch job queue health; trigger cron `/api/cron/process` as needed
+4. Watch job queue health; trigger the cron processor as needed
