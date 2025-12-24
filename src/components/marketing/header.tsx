@@ -31,11 +31,19 @@ function DesktopDropdown({ group, isOpen, setOpen }: { group: NavGroup; isOpen: 
     }
   };
 
+  const handleMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
+    const related = event.relatedTarget as Node | null;
+    if (related && event.currentTarget.contains(related)) {
+      return;
+    }
+    setOpen(null);
+  };
+
   return (
     <div
       className="relative"
       onMouseEnter={() => setOpen(group.label)}
-      onMouseLeave={() => setOpen(null)}
+      onMouseLeave={handleMouseLeave}
       onFocus={() => setOpen(group.label)}
       onBlur={handleBlur}
     >
