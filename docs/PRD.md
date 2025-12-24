@@ -6,25 +6,28 @@
 - Admin: oversees KYC, ledger integrity, disputes, monitoring
 
 ## MVP Scope
-- Auth + 2FA (TOTP), audit logs, login + security notifications
-- Worker onboarding: profile → KYC → wallet eligibility → virtual card
-- Wallet: ledger-based balances, transactions list, CSV export
-- Virtual Card: issue/freeze/unfreeze, limits, transaction feed (mock)
-- Payments: invoices, fund wallet, release payouts
+- Auth + 2FA (TOTP), audit logs, login + security notifications (mock email + in-app)
+- Worker onboarding: profile → KYC gating → wallet eligibility → virtual card
+- Wallet: ledger-based balances, holds, transactions list, CSV export
+- Virtual Card: issue/freeze/unfreeze, limits, transaction feed (mock-first; Marqeta when configured)
+- Payments: invoices, fund wallet, release payouts (Wise mock/real toggle)
+- Admin: KYC queue, audit log viewer, jobs monitor, disputes/holds rudiments
 
 ## Phase 2
 - Email verification flow, PDF receipts, FX conversion, card limits UI
-- Provider adapters (KYC, Payment, Card), notifications preferences
+- Provider adapters (KYC, Payment, Card), notifications preferences, webhook idempotency store
+- Projects + milestones linked to invoices/payments
 
 ## Phase 3
 - Advanced dispute handling, holds/reserves, chargeback/reversal flows
 
 ## Acceptance Criteria (MVP)
 - 2FA: Setup via QR/secret; verify + recovery codes; disable requires re-auth
-- Ledger: every balance change written as LedgerEntry; no direct mutations
-- Payout: idempotent POST creates pending ledger; job marks paid → posted
-- Card: issue requires KYC approved + funded wallet; freeze/unfreeze logged
-- Notifications: in-app event records for security and payments
+- Ledger: every balance change written as LedgerEntry; no direct mutations; idempotency keys enforced
+- Payout: idempotent POST creates pending ledger; job marks paid → posted; Wise mock/real toggle respected
+- Card: issue requires KYC approved + funded wallet; freeze/unfreeze logged; holds settle into ledger debits
+- Notifications: in-app event records for security and payments; email stubs allowed in mock mode
+- Admin: can view audit logs, KYC queue status, and job queue states
 
 ## Analytics Events
 - auth.login, auth.2fa_enabled, auth.2fa_disabled
