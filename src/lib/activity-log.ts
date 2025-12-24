@@ -23,15 +23,13 @@ export function recordActivity(event: Omit<ActivityEvent, "id" | "createdAt">) {
   activityEvents.unshift(entry);
 
   if (event.actorUserId) {
-    try {
-      pushAudit(event.actorUserId, event.eventType, {
-        entityType: event.entityType,
-        entityId: event.entityId,
-        ...(event.metadata ?? {}),
-      });
-    } catch {
+    void pushAudit(event.actorUserId, event.eventType, {
+      entityType: event.entityType,
+      entityId: event.entityId,
+      ...(event.metadata ?? {}),
+    }).catch(() => {
       // ignore audit push failures in this lightweight context
-    }
+    });
   }
 
   return entry;

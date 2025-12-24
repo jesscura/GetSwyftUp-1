@@ -6,8 +6,8 @@ type CopilotQuestion =
   | "fx_paid"
   | "card_vs_bank";
 
-export function answerCopilot(question: CopilotQuestion, referenceId?: string) {
-  const db = getDb();
+export async function answerCopilot(question: CopilotQuestion, referenceId?: string) {
+  const db = await getDb();
   let answer = "";
   if (question === "withdrawal_delay") {
     const payout = referenceId ? db.payouts.find((p) => p.id === referenceId) : db.payouts[0];
@@ -26,6 +26,9 @@ export function answerCopilot(question: CopilotQuestion, referenceId?: string) {
       "Bank withdrawal (Wise) shows mid-market FX and a transparent Wise fee—best for low FX cost. " +
       "Cards draw from your wallet for instant spend and may use network FX; choose cards for convenience, not cheapest FX.";
   }
-  pushAudit("user_owner", "copilot_response", { question, referenceId, answer });
+  const ownerId = db.users.find((user) => user.role === "OWNER")?.id;
+  if (ownerId) {
+    await pushAudit(ownerId, "copilot_response", { question, referenceId, answer });
+  }
   return answer;
 }
