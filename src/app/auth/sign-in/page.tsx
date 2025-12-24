@@ -7,6 +7,7 @@ import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { isSafeRedirect } from "@/lib/safe-redirect";
 
 export default function SignInPage() {
   const searchParams = useSearchParams();
@@ -18,16 +19,6 @@ export default function SignInPage() {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
-    const isSafeRedirect = (url: string | null) => {
-      if (!url) return false;
-      try {
-        const parsed = new URL(url, window.location.origin);
-        return parsed.origin === window.location.origin;
-      } catch {
-        return url.startsWith("/") && !url.startsWith("//");
-      }
-    };
-
     const rawCallback = searchParams.get("callbackUrl") ?? searchParams.get("redirectTo");
     const callbackUrl = isSafeRedirect(rawCallback) ? rawCallback! : "/dashboard";
     const res = await signIn("credentials", {
@@ -40,7 +31,7 @@ export default function SignInPage() {
     if (res?.error) {
       setError(res.error === "MFA_REQUIRED" ? "A valid 2FA code is required to continue." : "Invalid credentials");
     } else {
-      const target = isSafeRedirect(res?.url ?? null) ? res?.url! : callbackUrl;
+      const target = res?.url && isSafeRedirect(res.url) ? res.url : callbackUrl;
       window.location.href = target;
     }
   };

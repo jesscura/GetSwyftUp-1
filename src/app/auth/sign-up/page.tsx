@@ -6,6 +6,7 @@ import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { isSafeRedirect } from "@/lib/safe-redirect";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
@@ -17,16 +18,6 @@ export default function SignUpPage() {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setMessage(null);
-    const isSafeRedirect = (url: string | null) => {
-      if (!url) return false;
-      try {
-        const parsed = new URL(url, window.location.origin);
-        return parsed.origin === window.location.origin;
-      } catch {
-        return url.startsWith("/") && !url.startsWith("//");
-      }
-    };
-
     const normalizedInvite = inviteToken?.trim() ?? "";
     let journeyTarget = "/onboarding/company/org";
     if (accountType === "contractor") {
@@ -47,7 +38,7 @@ export default function SignUpPage() {
       return;
     }
     setMessage("Workspace created. Redirecting to your next step…");
-    const target = isSafeRedirect(res?.url ?? null) ? res?.url! : journeyTarget;
+    const target = res?.url && isSafeRedirect(res.url) ? res.url : journeyTarget;
     window.location.href = target;
   };
 
