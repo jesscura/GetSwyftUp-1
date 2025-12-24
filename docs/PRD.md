@@ -19,10 +19,10 @@
 - Webhook idempotency/event store
 - Projects + milestones linked to invoices/payments
 
-## Phase 3
+## Phase 3 — Implement all of the following
 - Advanced dispute handling, holds/reserves, chargeback/reversal flows
 
-## Acceptance Criteria (MVP)
+## Acceptance Criteria (MVP) — All must be met
 - 2FA: Setup via QR/secret; verify + recovery codes; disable requires re-auth
 - Ledger: every balance change written as LedgerEntry; no direct mutations; idempotency keys enforced
 - Payout: idempotent POST creates pending ledger; job marks paid → posted; Wise mock/real toggle respected
@@ -30,7 +30,7 @@
 - Notifications: in-app event records for security and payments; email stubs allowed in mock mode
 - Admin: can view audit logs, KYC queue status, and job queue states
 
-## Analytics Events
+## Analytics Events — Capture all of the following
 - auth.login, auth.2fa_enabled, auth.2fa_disabled
 - onboarding.profile_completed, onboarding.kyc_submitted, onboarding.kyc_approved
 - wallet.funded, wallet.payout_requested, wallet.payout_completed
