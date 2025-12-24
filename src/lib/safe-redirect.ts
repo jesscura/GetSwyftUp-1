@@ -1,9 +1,10 @@
 export function isSafeRedirect(url: string | null | undefined) {
   if (!url) return false;
-  const fallbackOrigin = typeof window !== "undefined" ? window.location.origin : "http://localhost";
+  if (typeof window === "undefined") return false;
+  const origin = window.location.origin;
   try {
-    const parsed = new URL(url, fallbackOrigin);
-    return parsed.origin === fallbackOrigin;
+    const parsed = new URL(url, origin);
+    return parsed.origin === origin;
   } catch {
     return url.startsWith("/") && !url.startsWith("//");
   }

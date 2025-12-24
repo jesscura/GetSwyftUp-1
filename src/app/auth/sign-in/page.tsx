@@ -20,7 +20,7 @@ export default function SignInPage() {
     event.preventDefault();
     setError(null);
     const rawCallback = searchParams.get("callbackUrl") ?? searchParams.get("redirectTo");
-    const callbackUrl = isSafeRedirect(rawCallback) ? rawCallback! : "/dashboard";
+    const callbackUrl = rawCallback && isSafeRedirect(rawCallback) ? rawCallback : "/dashboard";
     const res = await signIn("credentials", {
       redirect: false,
       email,
