@@ -82,11 +82,13 @@ export function removeEnrollment(userId: string): void {
   enrollments.delete(userId);
 }
 
+function toArrayBuffer(view: Uint8Array): ArrayBuffer {
+  return view.buffer.slice(view.byteOffset, view.byteOffset + view.byteLength) as ArrayBuffer;
+}
+
 async function hmacSha1(keyBytes: Uint8Array, data: Uint8Array): Promise<Uint8Array> {
-  const keyBuffer = keyBytes.buffer.slice(keyBytes.byteOffset, keyBytes.byteOffset + keyBytes.byteLength) as ArrayBuffer;
-  const key = await crypto.subtle.importKey("raw", keyBuffer, { name: "HMAC", hash: "SHA-1" }, false, ["sign"]);
-  const dataBuffer = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer;
-  const sig = await crypto.subtle.sign("HMAC", key, dataBuffer);
+  const key = await crypto.subtle.importKey("raw", toArrayBuffer(keyBytes), { name: "HMAC", hash: "SHA-1" }, false, ["sign"]);
+  const sig = await crypto.subtle.sign("HMAC", key, toArrayBuffer(data));
   return new Uint8Array(sig);
 }
 
