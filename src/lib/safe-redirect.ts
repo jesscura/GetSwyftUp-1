@@ -1,7 +1,7 @@
-export function isSafeRedirect(url: string | null | undefined) {
+export function isSafeRedirect(url: string | null | undefined, baseOrigin?: string) {
   if (!url) return false;
-  if (typeof window === "undefined") return false;
-  const origin = window.location.origin;
+  const origin = baseOrigin ?? (typeof window !== "undefined" ? window.location.origin : process.env.NEXT_PUBLIC_APP_URL);
+  if (!origin) return false;
   try {
     const parsed = new URL(url, origin);
     return parsed.origin === origin;
