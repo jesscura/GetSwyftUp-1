@@ -9,7 +9,7 @@
 - Auth + 2FA (TOTP), audit logs, login + security notifications
 - Worker onboarding: profile → KYC → wallet eligibility → virtual card
 - Wallet: ledger-based balances, transactions list, CSV export
-- Virtual Card: issue/freeze/unfreeze, limits, transaction feed (mock)
+- Virtual Card: issue/freeze/unfreeze, limits, transaction feed
 - Payments: invoices, fund wallet, release payouts
 
 ## Phase 2 — Implement all of the following

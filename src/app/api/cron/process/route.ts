@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { processJobsAction } from "@/lib/mock-db";
+import { processJobsAction } from "@/lib/data-service";
 
 export async function GET() {
   await processJobsAction();

@@ -1,4 +1,4 @@
-import { getDb } from "@/lib/mock-db";
+import { getDb } from "@/lib/data-service";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 

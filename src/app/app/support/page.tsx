@@ -1,4 +1,4 @@
-import { addSupportMessageAction, getDb } from "@/lib/mock-db";
+import { addSupportMessageAction, getDb } from "@/lib/data-service";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

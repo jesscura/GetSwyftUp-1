@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { withdrawPayoutAction } from "@/lib/mock-db";
+import { withdrawPayoutAction } from "@/lib/data-service";
 import { requireIdempotency } from "@/lib/idempotency";
 
 export async function POST(request: NextRequest) {

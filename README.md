@@ -5,7 +5,7 @@ Production-style Next.js (App Router) dashboard for SwyftUp — contractor onboa
 ## Stack
 - Next.js 16 + TypeScript + Tailwind CSS (v4)
  - Auth: NextAuth (credentials-based workspace accounts)
-- Data layer: Prisma + PostgreSQL schema (mocked in-memory data for UI flows)
+- Data layer: Prisma + PostgreSQL schema powering the dashboard flows
 - Background jobs: simple job table processed via cron endpoint
 - Hosting: Railway-ready (see `railway.toml`)
 
@@ -34,15 +34,15 @@ Visit `http://localhost:3000`.
 - Auth routes: `/auth/sign-in`, `/auth/sign-up`. Protected app routes live under `/app`.
 
 ### Integration toggles
-- `WISE_API_KEY` marks payments + withdrawals (Wise sandbox) as ready in the dashboard and powers FX quote previews.
-- `MARQETA_API_KEY` marks the virtual card rail as configured; cards stay in mock mode until an issuer key is present. (Falls back to `CARD_ISSUER_API_KEY` for legacy envs.)
+- `WISE_API_KEY` marks payments + withdrawals as ready in the dashboard and powers FX quote previews.
+- `MARQETA_API_KEY` marks the virtual card rail as configured; cards stay disabled until an issuer key is present. (Falls back to `CARD_ISSUER_API_KEY` for legacy envs.)
 
 ### Provider API environments
 - Wise: Sandbox `https://api.wise-sandbox.com`, Production `https://api.wise.com`
 - Marqeta: Sandbox `https://sandbox-api.marqeta.com`, Production `https://api.marqeta.com`
 
-### Mock data, jobs, and seeding
-- UI data is served from an in-memory mock store that mirrors the Prisma schema and starts empty.
+### Data, jobs, and health
+- UI data is served from the shared data layer that mirrors the Prisma schema and starts empty.
 - Process queued background jobs (e.g., settle payouts): `GET /api/cron/process`.
 - Health check: `GET /api/health`.
 

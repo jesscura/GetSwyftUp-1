@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { createInvoiceAction, getDb } from "@/lib/mock-db";
+import { createInvoiceAction, getDb } from "@/lib/data-service";
 import { formatCurrency } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

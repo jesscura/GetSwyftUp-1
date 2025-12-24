@@ -1,4 +1,4 @@
-import { pushAudit } from "@/lib/mock-db";
+import { pushAudit } from "@/lib/data-service";
 
 export type ActivityEvent = {
   id: string;
@@ -30,7 +30,7 @@ export function recordActivity(event: Omit<ActivityEvent, "id" | "createdAt">) {
         ...(event.metadata ?? {}),
       });
     } catch {
-      // ignore audit push failures in mock context
+      // ignore audit push failures in this lightweight context
     }
   }
 

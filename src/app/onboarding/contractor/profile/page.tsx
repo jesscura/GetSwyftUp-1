@@ -1,4 +1,4 @@
-import { getDb, completeContractorProfileAction } from "@/lib/mock-db";
+import { getDb, completeContractorProfileAction } from "@/lib/data-service";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

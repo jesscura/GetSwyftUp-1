@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { issueCardAction, getDb } from "@/lib/mock-db";
+import { issueCardAction, getDb } from "@/lib/data-service";
 import { requireIdempotency } from "@/lib/idempotency";
 
 export async function POST(request: NextRequest) {

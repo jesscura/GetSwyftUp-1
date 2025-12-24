@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { approveInvoiceAction, getDb, payInvoiceAction } from "@/lib/mock-db";
+import { approveInvoiceAction, getDb, payInvoiceAction } from "@/lib/data-service";
 import { formatCurrency } from "@/lib/format";
 import { buildThemedEmail } from "@/lib/notification-service";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +16,8 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
   const marqetaConfigured = Boolean(
     process.env.MARQETA_API_KEY?.trim() || process.env.CARD_ISSUER_API_KEY?.trim(),
   );
+  const providerLabel = wiseConfigured ? "Wise" : "Payout provider";
+  const cardRailLabel = marqetaConfigured ? "Marqeta" : "Card issuer";
   const emailPreview = buildThemedEmail(
     invoice.status === "paid" ? "payout.completed" : "payout.scheduled",
     {
@@ -23,8 +25,8 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
       payoutId: invoice.id,
       amount: invoice.amount,
       currency: invoice.currency,
-      provider: wiseConfigured ? "Wise sandbox" : "Wise mock",
-      cardRail: marqetaConfigured ? "Marqeta sandbox" : "Mock issuer",
+      provider: providerLabel,
+      cardRail: cardRailLabel,
     },
   );
 
@@ -66,7 +68,7 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
             </form>
             <form action={async (_formData) => { await payInvoiceAction(invoice.id); }}>
               <Button className="w-full" type="submit" disabled={invoice.status === "paid"}>
-                Pay invoice (Wise sandbox)
+                Pay invoice (Wise)
               </Button>
             </form>
             <Button variant="secondary" className="w-full" type="button">
@@ -79,17 +81,17 @@ export default function InvoiceDetailPage({ params }: { params: { id: string } }
       <Card>
         <CardHeader className="flex items-center justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.2em] text-muted">Sandbox rails</p>
+            <p className="text-sm uppercase tracking-[0.2em] text-muted">Payment rails</p>
             <p className="text-sm text-muted">
-              Wise handles payout disbursement; Marqeta sandboxes card funding for the invoice.
+              Wise handles payout disbursement; Marqeta powers card funding for the invoice.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Badge tone={wiseConfigured ? "success" : "warning"}>
-              {wiseConfigured ? "Wise sandbox ready" : "Wise key missing"}
+              {wiseConfigured ? "Wise connected" : "Wise key missing"}
             </Badge>
             <Badge tone={marqetaConfigured ? "success" : "warning"}>
-              {marqetaConfigured ? "Marqeta sandbox ready" : "Marqeta key missing"}
+              {marqetaConfigured ? "Marqeta connected" : "Marqeta key missing"}
             </Badge>
           </div>
         </CardHeader>

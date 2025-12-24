@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { getDb } from "@/lib/mock-db";
+import { getDb } from "@/lib/data-service";
 import { formatCurrency } from "@/lib/format";
 
 export const metadata = { title: "Wallet Transactions | SwyftUp" };

@@ -10,14 +10,14 @@ export default function BillingPage() {
   );
   const paymentMethods = [
     {
-      type: "Wise sandbox payout balance",
+      type: "Wise payout balance",
       last4: wiseConfigured ? "WISE" : "Missing",
-      status: wiseConfigured ? "Ready" : "Add sandbox key",
+      status: wiseConfigured ? "Ready" : "Add API key",
     },
     {
       type: "Marqeta virtual card",
-      last4: marqetaConfigured ? "MRQT" : "Sandbox",
-      status: marqetaConfigured ? "Active" : "Configure issuer",
+      last4: marqetaConfigured ? "MRQT" : "Pending",
+      status: marqetaConfigured ? "Active" : "Add issuer key",
     },
     { type: "Corporate card", last4: "1024", status: "Active" },
     { type: "Treasury account", last4: "8841", status: "On file" },
@@ -72,13 +72,13 @@ export default function BillingPage() {
         <CardContent className="grid gap-3">
           <div className="flex flex-wrap items-center gap-2 rounded-[var(--radius-card)] border border-white/5 bg-white/5 p-4">
             <Badge tone={wiseConfigured ? "success" : "warning"}>
-              {wiseConfigured ? "Wise sandbox ready" : "Wise key missing"}
+              {wiseConfigured ? "Wise connected" : "Wise key missing"}
             </Badge>
             <Badge tone={marqetaConfigured ? "success" : "warning"}>
-              {marqetaConfigured ? "Marqeta sandbox ready" : "Marqeta key missing"}
+              {marqetaConfigured ? "Marqeta connected" : "Marqeta key missing"}
             </Badge>
             <p className="text-xs text-muted">
-              Invoice payouts route through Wise; card payments ride the Marqeta sandbox rail.
+              Invoice payouts route through Wise; card payments ride the Marqeta card rail.
             </p>
           </div>
           {paymentMethods.map((method) => (

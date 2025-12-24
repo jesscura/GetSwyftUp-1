@@ -501,7 +501,7 @@ export const payInvoiceAction = async (invoiceId: string) => {
 
 export const fundWalletAction = async (amount: number) => {
   "use server";
-  addLedger("w_org", "CREDIT", amount, "funding", `fund_${randomShort(6)}`, "Mock funding");
+  addLedger("w_org", "CREDIT", amount, "funding", `fund_${randomShort(6)}`, "Wallet funding");
   updateOnboardingState({ fundingSourceConnected: true });
   pushAudit("user_owner", "fund_wallet", { amount });
   revalidatePath("/app/wallet");
@@ -606,7 +606,7 @@ export const issueCardAction = async (contractorId: string) => {
     contractorId,
     last4: randomShort(4),
     status: "active",
-    provider: "Mock",
+    provider: "Marqeta",
     limits: { daily: 1000, monthly: 7500 },
   };
   db.cards.unshift(card);

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { completeCompanySetupAction, getDb } from "@/lib/mock-db";
+import { completeCompanySetupAction, getDb } from "@/lib/data-service";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

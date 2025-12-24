@@ -24,7 +24,7 @@
 
 ### Payments
 - Client creates invoice or milestone payable
-- Fund invoice/milestone (mock ok for MVP)
+- Fund invoice/milestone end-to-end
 - Release payment to worker wallet (ledger credit)
 - Receipts + transaction references
 
@@ -85,9 +85,8 @@
    - Keep only dev seed behind an explicit flag `SEED_DEMO_DATA=true` (default false).
    - Ensure production never auto-seeds demo data.
    - Clear demo data migrations or mark them dev-only.
-3. **Feature flags / mock modes**
-   - Keep mock providers but make it explicit; show “Mock mode” only in dev.
-   - Ensure production hides mock banners.
+3. **Feature flags / provider modes**
+   - Keep provider environment indicators scoped to dev; production should present live rails.
    - Ensure provider toggles depend on env vars (Wise/Marqeta keys).
 4. **Remove debug endpoints & logs**
    - Remove/lock any debug APIs: `/api/debug/*`, `/api/dev/*`.

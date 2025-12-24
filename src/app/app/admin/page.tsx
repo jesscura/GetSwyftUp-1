@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { getDb } from "@/lib/mock-db";
+import { getDb } from "@/lib/data-service";
 
 export const metadata = { title: "Admin Console | SwyftUp" };
 

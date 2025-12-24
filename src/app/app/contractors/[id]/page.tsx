@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input, Select } from "@/components/ui/input";
 import { StatusBadge } from "@/components/status-badge";
-import { getDb, updateContractorContractAction } from "@/lib/mock-db";
+import { getDb, updateContractorContractAction } from "@/lib/data-service";
 
 export default function ContractorDetailPage({ params }: { params: { id: string } }) {
   const db = getDb();

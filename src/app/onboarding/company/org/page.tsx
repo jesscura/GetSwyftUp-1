@@ -1,4 +1,4 @@
-import { updateOrgProfileAction } from "@/lib/mock-db";
+import { updateOrgProfileAction } from "@/lib/data-service";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input, Select } from "@/components/ui/input";

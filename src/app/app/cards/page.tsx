@@ -1,4 +1,4 @@
-import { issueCardAction, toggleCardStatusAction, getDb } from "@/lib/mock-db";
+import { issueCardAction, toggleCardStatusAction, getDb } from "@/lib/data-service";
 import { formatCurrency } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

@@ -1,5 +1,5 @@
-import { getDb } from "@/lib/mock-db";
-import { pushAudit } from "@/lib/mock-db";
+import { getDb } from "@/lib/data-service";
+import { pushAudit } from "@/lib/data-service";
 
 type CopilotQuestion =
   | "withdrawal_delay"

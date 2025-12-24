@@ -11,14 +11,14 @@ export default function IntegrationsPage() {
   const integrations = [
     {
       title: "Payments & FX quotes",
-      provider: "Wise sandbox",
+      provider: "Wise",
       status: wiseConfigured
         ? { label: "Ready", tone: "success" as const }
         : { label: "Add WISE_API_KEY", tone: "warning" as const },
-      description: "Contractor payouts and FX previews run through the Wise sandbox.",
+      description: "Contractor payouts and FX previews run through Wise.",
       actionLabel: "View payouts",
       href: "/dashboard/payouts",
-      meta: wiseConfigured ? "Sandbox token detected for payouts/FX." : "Add your sandbox API key to enable calls.",
+      meta: wiseConfigured ? "API token detected for payouts/FX." : "Add your API key to enable calls.",
     },
     {
       title: "Withdrawals",
@@ -33,14 +33,14 @@ export default function IntegrationsPage() {
     },
     {
       title: "Card issuance",
-      provider: "Marqeta sandbox",
+      provider: "Marqeta",
       status: marqetaConfigured
         ? { label: "Ready", tone: "success" as const }
         : { label: "Add MARQETA_API_KEY", tone: "warning" as const },
-      description: "Virtual cards are issued from the Marqeta sandbox; swap keys to talk to your provider.",
+      description: "Virtual cards are issued from Marqeta; swap keys to talk to your provider.",
       actionLabel: "Manage cards",
       href: "/dashboard/cards",
-      meta: marqetaConfigured ? "Marqeta sandbox key detected." : "Cards stay in sandbox mode until issuer keys are set.",
+      meta: marqetaConfigured ? "Marqeta issuer key detected." : "Cards stay pending until issuer keys are set.",
     },
   ] as const;
 
@@ -57,10 +57,10 @@ export default function IntegrationsPage() {
         </div>
         <div className="flex flex-wrap gap-2">
           <Badge tone={wiseConfigured ? "success" : "warning"}>
-            {wiseConfigured ? "Wise sandbox detected" : "Wise key missing"}
+            {wiseConfigured ? "Wise connected" : "Wise key missing"}
           </Badge>
           <Badge tone={marqetaConfigured ? "success" : "warning"}>
-            {marqetaConfigured ? "Marqeta ready" : "Marqeta key missing"}
+            {marqetaConfigured ? "Marqeta connected" : "Marqeta key missing"}
           </Badge>
         </div>
       </div>

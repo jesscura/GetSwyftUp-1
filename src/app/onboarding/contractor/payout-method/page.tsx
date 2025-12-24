@@ -1,4 +1,4 @@
-import { getDb, savePayoutMethodAction } from "@/lib/mock-db";
+import { getDb, savePayoutMethodAction } from "@/lib/data-service";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input, Select } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

@@ -47,8 +47,8 @@ function getPreferences(userId: string) {
 }
 
 export function buildThemedEmail(event: NotificationEvent, metadata: Record<string, unknown> = {}): ThemedEmail {
-  const provider = (metadata.provider as string) ?? "Wise sandbox";
-  const rail = (metadata.cardRail as string) ?? "Marqeta sandbox";
+  const provider = (metadata.provider as string) ?? "Wise";
+  const rail = (metadata.cardRail as string) ?? "Marqeta";
   const amount = metadata.amount as number | undefined;
   const currency = (metadata.currency as string) ?? "USD";
   const invoiceId = (metadata.invoiceId as string) ?? "invoice";
@@ -58,7 +58,7 @@ export function buildThemedEmail(event: NotificationEvent, metadata: Record<stri
     subject: "SwyftUp transaction update",
     preheader: "Your workspace has a new transaction event.",
     headline: "Transaction update",
-    body: "Your transaction was processed in the sandbox.",
+    body: "Your transaction was processed successfully.",
     accentColor: "#5CE1E6",
     cta: { label: "Open dashboard", href: "/app" },
     footer: `${provider} • ${rail}`,
@@ -83,7 +83,7 @@ export function buildThemedEmail(event: NotificationEvent, metadata: Record<stri
   } else if (event.startsWith("card.")) {
     base.subject = `Card update via ${rail}`;
     base.headline = "Card status changed";
-    base.body = `Your Marqeta sandbox card rail (${rail}) recorded a card event.`;
+    base.body = `Your Marqeta card rail (${rail}) recorded a card event.`;
     base.preheader = "Virtual card update.";
   }
 

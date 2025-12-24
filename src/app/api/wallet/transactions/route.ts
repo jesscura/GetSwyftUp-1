@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { getDb } from "@/lib/mock-db";
+import { getDb } from "@/lib/data-service";
 
 export async function GET(request: NextRequest) {
   const session = await auth();
