@@ -37,6 +37,10 @@ Visit `http://localhost:3000`.
 - `WISE_API_KEY` marks payments + withdrawals (Wise sandbox) as ready in the dashboard and powers FX quote previews.
 - `MARQETA_API_KEY` marks the virtual card rail as configured; cards stay in mock mode until an issuer key is present. (Falls back to `CARD_ISSUER_API_KEY` for legacy envs.)
 
+### Provider API environments
+- Wise: Sandbox `https://api.wise-sandbox.com`, Production `https://api.wise.com`
+- Marqeta: Sandbox `https://sandbox-api.marqeta.com`, Production `https://api.marqeta.com`
+
 ### Mock data, jobs, and seeding
 - UI data is served from an in-memory mock store that mirrors the Prisma schema and starts empty.
 - Process queued background jobs (e.g., settle payouts): `GET /api/cron/process`.
