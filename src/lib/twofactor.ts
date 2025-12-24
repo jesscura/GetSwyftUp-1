@@ -82,9 +82,18 @@ export function removeEnrollment(userId: string): void {
   enrollments.delete(userId);
 }
 
+/**
+ * Normalize a Uint8Array view into a standalone ArrayBuffer for Web Crypto APIs.
+ */
+function toArrayBuffer(view: Uint8Array): ArrayBuffer {
+  const buffer = new ArrayBuffer(view.byteLength);
+  new Uint8Array(buffer).set(view);
+  return buffer;
+}
+
 async function hmacSha1(keyBytes: Uint8Array, data: Uint8Array): Promise<Uint8Array> {
-  const key = await crypto.subtle.importKey("raw", keyBytes, { name: "HMAC", hash: "SHA-1" }, false, ["sign"]);
-  const sig = await crypto.subtle.sign("HMAC", key, data);
+  const key = await crypto.subtle.importKey("raw", toArrayBuffer(keyBytes), { name: "HMAC", hash: "SHA-1" }, false, ["sign"]);
+  const sig = await crypto.subtle.sign("HMAC", key, toArrayBuffer(data));
   return new Uint8Array(sig);
 }
 
