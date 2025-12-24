@@ -17,7 +17,7 @@ export default function SignUpPage() {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setMessage(null);
-    const normalizedInvite = inviteToken.trim();
+    const normalizedInvite = (inviteToken ?? "").trim();
     let journeyTarget = "/onboarding/company/org";
     if (accountType === "contractor") {
       if (!normalizedInvite) {
