@@ -12,6 +12,14 @@
 - **Integrations & toggles**: `src/lib/wise-provider.ts` simulates Wise FX quotes/transfers (mock-first, keyed off `WISE_API_KEY`). No Marqeta adapter yet; card flows are mock-only and rely on wallet balance checks in `issueCardAction`.
 - **UI**: Dashboard pages under `src/app/dashboard` (role-aware) and `src/app/app` (single-tenant demo) render panels for contractors, invoices, payouts, cards, wallet, settings, audit logs, and support. Components and tokens live in `src/components` with Tailwind v4 styling in `src/app/globals.css`.
 
+## Phase 0 Discovery Map
+- **Auth config + session shape**: NextAuth config in `src/lib/auth.ts` (JWT strategy), with session helper in `src/lib/current-user.ts` and 2FA helpers in `src/lib/twofactor.ts`.
+- **Middleware / route guards**: `src/middleware.ts` protects `/dashboard/*` via `canAccessPath`; `/app/*` currently renders behind a static layout without middleware gating.
+- **UI layout + nav config**: Marketing nav lives in `src/config/navConfig.ts`; dashboard shells are `src/app/layout.tsx`, `src/app/dashboard/layout.tsx`, and `src/app/app/layout.tsx` (sidebar defined inline). Sidebar component is `src/components/dashboard/sidebar.tsx`.
+- **Prisma schema + migrations**: Schema in `prisma/schema.prisma`; no migrations checked in yet. Mock runtime mirrors schema inside `src/lib/mock-db.ts`.
+- **API route conventions**: App Router handlers under `src/app/api/*` use NextResponse, call `auth()` for gating, and delegate to mock-db/server-actions (e.g., `/api/wallet/*`, `/api/card/*`, `/api/cron/process`).
+- **Job/cron system & webhooks**: In-memory `Job` records in `src/lib/mock-db.ts`; `/api/cron/process` runs `processJobsAction`. Webhook patterns not present yet; mock providers live in `lib/wise-provider.ts`.
+
 ## Delta Plan (toward full SwyftUp architecture)
 1) **Navigation & RBAC**: Expand role-aware nav to the required Worker/Client/Admin Information Architecture and reconcile `/dashboard` vs `/app` shells; ensure middleware guards new paths.  
 2) **Module boundaries**: Introduce `/src/modules/*` per domain (auth, onboarding, orgs, contractors, projects, invoices, payments, wallet, cards, notifications, audit, support, admin, jobs, webhooks) with colocated types, services, DB access, API handlers, and UI.  
@@ -23,6 +31,21 @@
 8) **Admin & support**: Build KYC queue, transactions/holds monitor, cards monitor, disputes, support ticket management, and job observer pages under admin nav.  
 9) **Webhooks & idempotency**: Add `/api/webhooks/wise` and `/api/webhooks/marqeta` that verify signatures, persist ProviderEventLog, and process events transactionally/idempotently.  
 10) **UI system**: Introduce lightweight design primitives (cards/tables/badges/skeletons) and apply consistent spacing/typography across dashboards, wallet, and card feeds.
+
+## Implementation Map (where upcoming features land)
+- **Auth + RBAC**: `src/lib/auth.ts`, `src/lib/current-user.ts`, `src/config/roles.ts`, `src/middleware.ts`, `src/components/dashboard/sidebar.tsx`.
+- **Wallet & ledger**: `src/lib/mock-db.ts` (temporary), future `src/modules/wallet/*` for ledger/holds service; UI under `src/app/app/wallet` and `src/app/dashboard/payouts`.
+- **Projects/Tasks/Milestones**: Add under `src/modules/projects/*` with UI at `src/app/app/projects/*` (placeholder to be added when models exist).
+- **Invoices & payouts**: `src/lib/mock-db.ts` actions, `src/app/app/invoices/*`, `src/app/api/wallet/*` for balances/transactions.
+- **Cards**: `src/lib/mock-db.ts`, `src/lib/wise-provider.ts` (FX), UI at `src/app/app/cards`, API at `src/app/api/card/*`.
+- **Notifications & audit**: `src/lib/notification-service.ts`, audit helpers in `src/lib/mock-db.ts`, UI at `src/app/app/audit-logs`.
+- **Jobs & webhooks**: `src/lib/mock-db.ts` + `/api/cron/process`; future real job runner under `src/modules/jobs/*` and webhooks under `src/app/api/webhooks/*`.
+- **Docs**: Product/architecture/security docs live in `docs/*.md`.
+
+## Rollout Plan (MVP → Phase 2)
+- **MVP (ChangeSets 1–3)**: Ship documentation, role-aware navigation, and foundational wallet/ledger services with idempotent postings, holds, and reporting endpoints/UI.
+- **Phase 2 (ChangeSets 4–6)**: Layer workspace Projects/Tasks/Milestones, invoice-to-wallet funding, and virtual card module with provider adapter toggles.
+- **Phase 3 (ChangeSets 7–9)**: Enforce 2FA + security notifications, expand admin consoles (KYC/disputes/transactions), add webhook idempotency store, and stabilize background jobs.
 
 ## File Map (key touchpoints)
 - **Routing/layout**: `src/app/layout.tsx` (root), `src/app/dashboard/layout.tsx` (role-aware shell), `src/app/app/layout.tsx` (demo shell), `src/middleware.ts` (auth + path guard).  
